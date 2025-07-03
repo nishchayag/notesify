@@ -2,7 +2,7 @@ import connectDB from "@/libs/connectDB";
 import userModel from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 await connectDB();
-export default async function POST(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
     const { token } = await request.json();
     if (!token) {
@@ -11,7 +11,7 @@ export default async function POST(request: NextRequest) {
     }
     const currUser = await userModel.findOneAndUpdate(
       {
-        token,
+        verifyToken: token,
         verifyTokenExpiry: { $gt: Date.now() },
       },
       { isVerified: true, verifyToken: undefined, verifyTokenExpiry: undefined }
@@ -23,6 +23,6 @@ export default async function POST(request: NextRequest) {
     console.log("User verified successfully: ", currUser);
     return NextResponse.json({ message: "User verified successfully" });
   } catch (error) {
-    console.error("Cannot verify: ", error);
+    return NextResponse.json({ error: "Could not verify User: " + error });
   }
 }

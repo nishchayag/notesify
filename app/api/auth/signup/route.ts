@@ -10,14 +10,14 @@ export async function POST(request: NextRequest) {
 
     const currUser = await userModel.findOne({ email });
     if (currUser) {
-      NextResponse.json({
+      return NextResponse.json({
         error: "Email already in use for an existing account",
       });
     }
 
     const hashedPassword = await bcryptjs.hash(password, 10);
 
-    const newUser = userModel.create({ email, hashedPassword });
+    const newUser = await userModel.create({ email, password: hashedPassword });
     console.log("User registered successfully: ", newUser);
     sendEmail({ email, mailType: "VERIFY" });
     console.log("verification email sent");
@@ -25,6 +25,8 @@ export async function POST(request: NextRequest) {
       message: "User registered successfully, verification email sent.",
     });
   } catch (error) {
-    console.error("There was an error while registering: ", error);
+    return NextResponse.json({
+      error: "There was an error while registering: " + error,
+    });
   }
 }
