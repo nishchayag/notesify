@@ -17,12 +17,13 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        console.log("authorize function hit", credentials);
         // Add logic here to look up the user from the credentials supplied
         if (!credentials?.email || !credentials.password) {
           throw new Error("Missing email/password input value");
         }
         try {
-          connectDB();
+          await connectDB();
           const userInDB = await userModel.findOne({
             email: credentials?.email,
           });
@@ -69,4 +70,5 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  debug: true,
 };

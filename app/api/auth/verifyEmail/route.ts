@@ -9,15 +9,19 @@ export async function POST(request: NextRequest) {
       console.error("Error while verification, no token provided");
       return NextResponse.json({ error: "No token provided" });
     }
+    console.log(token);
     const currUser = await userModel.findOneAndUpdate(
       {
         verifyToken: token,
         verifyTokenExpiry: { $gt: Date.now() },
       },
-      { isVerified: true, verifyToken: undefined, verifyTokenExpiry: undefined }
+      {
+        $set: { isVerified: true },
+        $unset: { verifyToken: 1, verifyTokenExpiry: 1 },
+      },
+      { new: true }
     );
     if (!currUser) {
-      console.error("Invalid Token ");
       return NextResponse.json({ error: "Invalid token" });
     }
     console.log("User verified successfully: ", currUser);
