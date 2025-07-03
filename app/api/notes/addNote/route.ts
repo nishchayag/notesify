@@ -2,13 +2,18 @@ import connectDB from "@/libs/connectDB";
 import noteModel from "@/models/note.model";
 import userModel from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
-connectDB();
-export default async function POST(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
+    await connectDB();
     const { email, title, content } = await request.json();
     const currUser = await userModel.findOne({ email });
+    if (!email || !title || !content) {
+      return NextResponse.json({ error: "Missing required fields" });
+    }
     if (!currUser) {
-      console.error("User does not exist, please enter correct email");
+      return NextResponse.json({
+        error: "User does not exist, please enter correct email",
+      });
     }
     const newNote = await noteModel.create({
       title,
@@ -17,9 +22,9 @@ export default async function POST(request: NextRequest) {
       createdBy: currUser._id,
     });
     await currUser.notes.push(newNote._id);
-    const updatedUser = await currUser.save();
+    await currUser.save();
     return NextResponse.json({
-      message: `Note created Successfully: ${updatedUser}`,
+      message: `Note created Successfully: ${newNote} `,
     });
   } catch (error) {
     return NextResponse.json({
