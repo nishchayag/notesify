@@ -64,10 +64,10 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.id = user.id;
-
+        token.email = user.email;
         const userInDB = await userModel.findOne({ email: user.email });
         token.isVerified = userInDB?.isVerified || false;
       }
