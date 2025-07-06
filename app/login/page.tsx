@@ -1,26 +1,20 @@
 "use client";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import axios from "axios";
-const page = () => {
-  const [loading, setLoading] = useState(false);
+import { useRouter } from "next/navigation";
+function page() {
   const [form, setForm] = useState({
     email: "",
-    name: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
-    if (
-      form.email.length == 0 ||
-      form.password.length == 0 ||
-      form.name.length == 0
-    ) {
+    if (form.email.length == 0 || form.password.length === 0) {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
@@ -31,20 +25,25 @@ const page = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      if (form.email.length == 0 || form.password.length == 0) {
+      if (form.email.length == 0 || form.password.length === 0) {
         console.error(
-          "Missing required fields, please enter email and password"
+          "Missing required fields, please enter email and password to login"
         );
       }
-      const response = await axios.post("/api/auth/signup", {
+      const response = await signIn("credentials", {
         email: form.email,
-        name: form.name,
         password: form.password,
+        redirect: true,
+        callbackUrl: "/notes",
       });
       console.log(response);
-      router.push("/login");
+      if (response?.ok) {
+        router.push("/notes");
+      } else {
+        console.error("error signing in: ");
+      }
     } catch (error) {
-      console.error("error while registering: ", error);
+      console.error("error signing in: ", error);
     } finally {
       setLoading(false);
     }
@@ -52,22 +51,11 @@ const page = () => {
 
   return (
     <div className="mt-20">
-      <h1 className="text-5xl text-center">REGISTER</h1>
+      <h1 className="text-5xl text-center">LOGIN</h1>
       <form
         className="flex flex-col gap-4 justify-center items-center mt-10"
         onSubmit={(e) => handleSubmit(e)}
       >
-        <label htmlFor="name" className="text-xl">
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          className="border px-3 py-2 rounded-xl w-100"
-          placeholder="example@email.com"
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
         <label htmlFor="email" className="text-xl">
           Email
         </label>
@@ -96,7 +84,7 @@ const page = () => {
           }`}
           disabled={isDisabled}
         >
-          Register
+          Log in
         </button>
       </form>
 
@@ -148,13 +136,13 @@ const page = () => {
       </div>
 
       <p className="text-center text-xl mt-10">
-        Already have an account?{" "}
-        <Link href="/login" className="hover:underline">
-          Login
+        Dont have an account?{" "}
+        <Link href="/signup" className="hover:underline">
+          Sign-Up
         </Link>
       </p>
     </div>
   );
-};
+}
 
 export default page;

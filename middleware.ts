@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 
 const authPages = ["/", "signup", "/login"];
 const protectedPages = ["/notes", "/createNote", "/editNote", "/deleteNote"];
-
+const verifyPage = "/askToVerify";
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -12,16 +12,21 @@ export async function middleware(request: NextRequest) {
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
   });
+  const isVerified = token?.isVerified;
   const isAuthenticated = !!token;
   const isAuthPage = authPages.includes(pathname);
   const isProtectedPage = protectedPages.some((path) =>
     pathname.startsWith(path)
   );
+  const isVerifyPage = verifyPage.includes(pathname);
 
   if (!isAuthenticated && isProtectedPage) {
     return NextResponse.redirect(new URL("/login", request.url));
-  }
-  if (isAuthenticated && isAuthPage) {
+  } else if (isAuthenticated && isAuthPage) {
+    return NextResponse.redirect(new URL("/notes", request.url));
+  } else if (!isAuthenticated && isVerifyPage) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  } else if (isAuthenticated && isVerified && isVerifyPage) {
     return NextResponse.redirect(new URL("/notes", request.url));
   }
   return NextResponse.next();

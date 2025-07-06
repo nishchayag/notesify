@@ -19,9 +19,13 @@ const Navbar = () => {
             <button
               onClick={() => setisDropdownOpen(!isDropdownOpen)}
               className="bg-white text-black px-3 py-2 rounded-xl cursor-pointer active:bg-neutral-300 flex justify-center items-center"
-              onBlur={() => setisDropdownOpen(false)}
+              onBlur={() =>
+                setTimeout(() => {
+                  setisDropdownOpen(false);
+                }, 300)
+              }
             >
-              Hello, username{" "}
+              Hello, {session.user.name || session.user.email}{" "}
               <svg
                 className="w-2.5 h-2.5 ms-3"
                 aria-hidden="true"
@@ -54,34 +58,28 @@ const Navbar = () => {
         <div className="flex justify-end mr-4">
           <div
             id="dropdown"
-            className="z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 text-center "
+            className="z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 text-center text-black flex justify-center flex-col items-center py-4"
           >
-            <ul
-              className="py-2  text-black"
-              aria-labelledby="dropdownDefaultButton"
+            <Link
+              href="/notes"
+              className="block px-4 py-2 hover:bg-gray-100 w-full"
             >
-              <li>
-                <Link
-                  href="/notes"
-                  className="block px-4 py-2 hover:bg-gray-100 "
-                >
-                  View Notes
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/dashboard"
-                  className="block px-4 py-2 hover:bg-gray-100 "
-                >
-                  User Settings
-                </Link>
-              </li>
-              <li onClick={() => signOut({ redirect: true, callbackUrl: "/" })}>
-                <Link href="#" className="block px-4 py-2 hover:bg-gray-100 ">
-                  Sign out
-                </Link>
-              </li>
-            </ul>
+              View Notes
+            </Link>
+
+            <Link
+              href="/dashboard"
+              className="block px-4 py-2 hover:bg-gray-100 w-full "
+            >
+              User Settings
+            </Link>
+
+            <button
+              onClick={() => signOut()}
+              className="block px-4 py-2 hover:bg-gray-100 w-full cursor-pointer"
+            >
+              Sign out
+            </button>
           </div>
         </div>
       )}

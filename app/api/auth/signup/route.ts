@@ -17,7 +17,11 @@ export async function POST(request: NextRequest) {
 
     const hashedPassword = await bcryptjs.hash(password, 10);
 
-    const newUser = await userModel.create({ email, password: hashedPassword });
+    const newUser = await userModel.create({
+      email,
+      password: hashedPassword,
+      provider: "credentials",
+    });
     console.log("User registered successfully: ", newUser);
     sendEmail({ email, mailType: "VERIFY" });
     console.log("verification email sent");

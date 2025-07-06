@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import connectDB from "./connectDB";
 import bcrypt from "bcryptjs";
 import { NextAuthOptions } from "next-auth";
+import GitHubProvider from "next-auth/providers/github";
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -20,7 +21,7 @@ export const authOptions: NextAuthOptions = {
         console.log("authorize function hit", credentials);
         // Add logic here to look up the user from the credentials supplied
         if (!credentials?.email || !credentials.password) {
-          throw new Error("Missing email/password input value");
+          return null;
         }
         try {
           await connectDB();
@@ -40,14 +41,16 @@ export const authOptions: NextAuthOptions = {
             userInDB.password
           );
           if (!isPasswordCorrect) {
-            throw new Error("invalid password");
+            return null;
           }
           return {
-            id: userInDB._id.toString(),
-            email: userInDB.email.toString(),
+            id: userInDB._id,
+            email: userInDB.email,
+            name: userInDB.name,
           };
         } catch (error) {
-          throw new Error("Error while signing in: " + error);
+          console.error("error logging in: ", error);
+          return null;
         }
       },
     }),
@@ -55,20 +58,53 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    }),
   ],
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+
+        const userInDB = await userModel.findOne({ email: user.email });
+        token.isVerified = userInDB?.isVerified || false;
       }
       return token;
     },
     async session({ session, token }) {
       if (token.id && session.user) {
         session.user.id = token.id;
+        session.user.isVerified = token.isVerified;
       }
       return session;
     },
+    async signIn({ user, account, profile }) {
+      try {
+        await connectDB();
+        const userInDB = await userModel.findOne({ email: user.email });
+        if (!userInDB) {
+          await userModel.create({
+            email: user.email,
+            name: user.name,
+            password: bcrypt.hash(user.email!.toString(), 10),
+            provider: account?.provider,
+            isVerified: true,
+          });
+        }
+        return true;
+      } catch (error) {
+        console.log("error signing in from backend: " + error);
+        return false;
+      }
+    },
+  },
+  pages: {
+    signIn: "/login",
+  },
+  session: {
+    strategy: "jwt",
   },
   debug: true,
   secret: process.env.NEXTAUTH_SECRET,

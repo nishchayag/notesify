@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  provider: {
+    type: String,
+    required: true,
+  },
   isVerified: {
     type: Boolean,
     default: false,
