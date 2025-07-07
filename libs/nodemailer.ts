@@ -48,9 +48,9 @@ export const sendEmail = async ({
         pass: process.env.MAILER_PASS,
       },
     });
-    const verifyEmailHtml = `<p>Click <a href="${process.env.DOMAIN}/verifyemail?token=${token}" >here</a> to "verify your email" 
+    const verifyEmailHtml = `<p>Click <a href="${process.env.DOMAIN}/verifyEmail?token=${token}" >here</a> to "verify your email" 
        or copy and paste the link below in your browser <br> ${process.env.DOMAIN}/verifyEmail?token=${token}</p>`;
-    const resetPasswordEmailHtml = `<p>Click <a href="${process.env.DOMAIN}/verifyEmail?token=${token}" >here</a> to  "reset your password"
+    const resetPasswordEmailHtml = `<p>Click <a href="${process.env.DOMAIN}/resetpassword?token=${token}" >here</a> to  "reset your password"
        or copy and paste the link below in your browser <br> ${process.env.DOMAIN}/resetpassword?token=${token}</p>`;
     const mailOptions = {
       from: "Notesify@mailservice.com",

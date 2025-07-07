@@ -13,7 +13,9 @@ const Navbar = () => {
   return (
     <>
       <nav className="flex flex-row justify-between  ">
-        <div className="flex justify-center ">Logo</div>
+        <div className="flex justify-center ">
+          <Link href="/">Logo</Link>
+        </div>
         <div className="p-5 ">
           {!!session ? (
             <button

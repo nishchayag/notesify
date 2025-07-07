@@ -7,6 +7,7 @@ export default async function connectDB() {
     const connection = mongoose.connection;
     connection.on("connected", () => {
       console.log("successfully connected to DB");
+      isConnected = true;
     });
     connection.on("error", (error) => {
       console.error("DB connection error, make sure DB is running: ", error);

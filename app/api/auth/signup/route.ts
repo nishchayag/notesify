@@ -6,7 +6,7 @@ import { sendEmail } from "@/libs/nodemailer";
 await connectDB();
 export async function POST(request: NextRequest) {
   try {
-    const { email, password } = await request.json();
+    const { email, password, name } = await request.json();
 
     const currUser = await userModel.findOne({ email });
     if (currUser) {
@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
 
     const newUser = await userModel.create({
       email,
+      name,
       password: hashedPassword,
       provider: "credentials",
     });

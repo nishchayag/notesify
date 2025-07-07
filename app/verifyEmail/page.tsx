@@ -6,10 +6,7 @@ import { signOut, useSession } from "next-auth/react";
 function page() {
   const [tokenVal, setTokenVal] = useState("");
   const urlParams = useSearchParams();
-  const { data: session } = useSession();
-  const { update } = useSession();
   const token = urlParams.get("token");
-  const router = useRouter();
   useEffect(() => {
     if (!token) {
       console.error("Please provide token");

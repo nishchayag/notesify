@@ -2,8 +2,21 @@ import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const authPages = ["/", "signup", "/login"];
-const protectedPages = ["/notes", "/createNote", "/editNote", "/deleteNote"];
+const authPages = [
+  "/",
+  "/signup",
+  "/login",
+  "/forgotPassword",
+  "/resetEmailSent",
+  "/resetpassword",
+];
+const protectedPages = [
+  "/notes",
+  "/createNote",
+  "/editNote",
+  "/deleteNote",
+  "/dashboard",
+];
 const verifyPage = "/askToVerify";
 
 export async function middleware(request: NextRequest) {

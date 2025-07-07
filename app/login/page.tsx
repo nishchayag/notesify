@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { sendEmail } from "@/libs/nodemailer";
 function page() {
   const [form, setForm] = useState({
     email: "",
@@ -77,6 +78,7 @@ function page() {
           className="border px-3 py-2 rounded-xl w-100"
           onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
+
         <button
           type="submit"
           className={`bg-white text-black px-4 py-3 rounded-xl ${
@@ -87,7 +89,14 @@ function page() {
           Log in
         </button>
       </form>
-
+      <div className="flex justify-center mt-2">
+        <button
+          onClick={() => router.push("/forgotPassword")}
+          className="bg-white text-black px-4 py-3 rounded-xl cursor-pointer"
+        >
+          Forgot Password
+        </button>
+      </div>
       <div className="flex justify-center items-center flex-col gap-4 mt-10">
         <button
           type="button"
