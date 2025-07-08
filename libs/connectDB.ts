@@ -1,19 +1,22 @@
 import mongoose from "mongoose";
-let isConnected = false;
+const MONGO_URI = process.env.MONGO_URI as string;
+if (!MONGO_URI) {
+  throw new Error("Please provide mongodb connection string in env file");
+}
+let cached = (global as any).mongoose;
+if (!cached) {
+  cached = (global as any).mongoose = { conn: null, promise: null };
+}
+
 export default async function connectDB() {
-  if (isConnected) return;
-  try {
-    await mongoose.connect(process.env.MONGO_URI!);
-    const connection = mongoose.connection;
-    connection.on("connected", () => {
-      console.log("successfully connected to DB");
-      isConnected = true;
-    });
-    connection.on("error", (error) => {
-      console.error("DB connection error, make sure DB is running: ", error);
-      process.exit(1);
-    });
-  } catch (error) {
-    console.error("Error connecting to DB: ", error);
+  if (cached.conn) return cached.conn;
+  if (!cached.promise) {
+    try {
+      cached.promise = mongoose.connect(MONGO_URI, { bufferCommands: false });
+    } catch (error) {
+      console.error("Error connecting to DB: ", error);
+    }
   }
+  cached.conn = await cached.promise;
+  return cached.conn;
 }
