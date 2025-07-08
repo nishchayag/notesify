@@ -27,11 +27,11 @@ export async function POST(request: NextRequest) {
 
     console.log("User registered successfully: ", newUser);
 
-    await Note.create({
-      email,
-      title: "Welcome To Notesify",
-      content: "This is your welcome note, edit or delete it anytime!",
-    });
+    // await Note.create({
+    //   email,
+    //   title: "Welcome To Notesify",
+    //   content: "This is your welcome note, edit or delete it anytime!",
+    // });
 
     sendEmail({ email, mailType: "VERIFY" });
     console.log("verification email sent");
