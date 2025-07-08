@@ -17,9 +17,11 @@ const EditNote = () => {
   });
   const outerIsCompleted = form.updatedIsCompleted;
   useEffect(() => {
-    setnoteid(params.get("noteid")!);
-  });
+    const id = params.get("noteid");
+    if (id) setnoteid(id);
+  }, [params]);
   useEffect(() => {
+    if (!noteid) return;
     const fetchNoteUsingId = async () => {
       const response = await axios.post("/api/notes/fetchNote", {
         noteId: noteid,
