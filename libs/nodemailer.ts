@@ -53,7 +53,7 @@ export const sendEmail = async ({
     const resetPasswordEmailHtml = `<p>Click <a href="${process.env.DOMAIN}/resetpassword?token=${token}" >here</a> to  "reset your password"
        or copy and paste the link below in your browser <br> ${process.env.DOMAIN}/resetpassword?token=${token}</p>`;
     const mailOptions = {
-      from: "Notesify@mailservice.com",
+      from: "demomailtrap.co",
       to: email,
       subject:
         mailType === "VERIFY" ? "Verify your email" : "Reset your password",
