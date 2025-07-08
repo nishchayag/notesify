@@ -21,12 +21,16 @@ function notesPage() {
           const response = await axios.post("/api/notes/fetchNotes", {
             email: session.user.email,
           });
+          console.log(response);
 
-          setNotesArray(response.data);
-
-          setFilteredNotesArray(response.data);
+          if (Array.isArray(response.data)) {
+            setNotesArray(response.data);
+            setFilteredNotesArray(response.data);
+          }
         } catch (error) {
           console.error("Couldnt fetch notes: ", error);
+          // setNotesArray([]);
+          // setFilteredNotesArray([]);
         } finally {
           setloading(false);
         }
@@ -34,6 +38,7 @@ function notesPage() {
     };
     fetchAllNotes();
   }, [session, status]);
+
   console.log(filteredNotesArray);
 
   useEffect(() => {
@@ -54,9 +59,13 @@ function notesPage() {
     if (filteredNotesArray.length === 0) {
       return (
         <div className="flex flex-col justify-center items-center gap-8">
-          <h1 className="text-center text-3xl">
-            No notes are present, please create a note
-          </h1>
+          <input
+            type="text"
+            placeholder="Search note"
+            className="border w-100 px-4 py-3 rounded-xl"
+            onChange={(e) => setSearchFilter(e.target.value)}
+            value={searchFilter}
+          />
           <button
             onClick={() => {
               router.push("/createnote");
@@ -66,6 +75,9 @@ function notesPage() {
             {" "}
             Create Note
           </button>
+          <h1 className="text-center text-3xl">
+            No notes are present, please create a note, or change search filter
+          </h1>
         </div>
       );
     } else {
@@ -77,6 +89,7 @@ function notesPage() {
               placeholder="Search note"
               className="border w-100 px-4 py-3 rounded-xl"
               onChange={(e) => setSearchFilter(e.target.value)}
+              value={searchFilter}
             />
             <button
               onClick={() => {

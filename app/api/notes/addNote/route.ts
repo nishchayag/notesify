@@ -1,5 +1,5 @@
 import connectDB from "@/libs/connectDB";
-import noteModel from "@/models/note.model";
+import Note from "@/models/note.model";
 import userModel from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
         error: "User does not exist, please enter correct email",
       });
     }
-    const newNote = await noteModel.create({
+    const newNote = await Note.create({
       title,
       content,
       isCompleted: false,

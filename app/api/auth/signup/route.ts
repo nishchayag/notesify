@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import connectDB from "@/libs/connectDB";
 import { sendEmail } from "@/libs/nodemailer";
-import noteModel from "@/models/note.model";
+import Note from "@/models/note.model";
 export async function POST(request: NextRequest) {
   try {
     await connectDB();
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
     console.log("User registered successfully: ", newUser);
 
-    await noteModel.create({
+    await Note.create({
       email,
       title: "Welcome To Notesify",
       content: "This is your welcome note, edit or delete it anytime!",

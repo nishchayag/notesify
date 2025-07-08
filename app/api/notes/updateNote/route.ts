@@ -1,11 +1,11 @@
-import noteModel from "@/models/note.model";
+import Note from "@/models/note.model";
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/libs/connectDB";
 export async function POST(request: NextRequest) {
   try {
     await connectDB();
     const { noteId, title, content, isCompleted } = await request.json();
-    const currNote = await noteModel.findOne({ _id: noteId });
+    const currNote = await Note.findOne({ _id: noteId });
     if (!currNote) {
       return NextResponse.json({ error: "Note does not exist" });
     }

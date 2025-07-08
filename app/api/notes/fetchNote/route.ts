@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/libs/connectDB";
-import noteModel from "@/models/note.model";
+import Note from "@/models/note.model";
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     if (!noteId) {
       return NextResponse.json({ error: "Please provide note id" });
     }
-    const noteInDB = await noteModel.findOne({ _id: noteId });
+    const noteInDB = await Note.findOne({ _id: noteId });
     if (!noteInDB) {
       return NextResponse.json({
         error: "Note not found in DB",
