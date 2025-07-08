@@ -50,7 +50,7 @@ function NotesPage() {
     const lowerSearch = searchFilter.toLowerCase();
 
     const filteredArray = notesArray.filter(
-      (note: any) =>
+      (note: NoteStruc) =>
         note.title.toLowerCase().includes(lowerSearch) ||
         note.content.toLowerCase().includes(lowerSearch)
     );
