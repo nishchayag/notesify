@@ -41,11 +41,11 @@ export const sendEmail = async ({
       );
     }
     var transporter = nodemailer.createTransport({
-      host: "live.smtp.mailtrap.io",
-      port: 587,
+      host: process.env.MAILER_HOST,
+      port: Number(process.env.MAILER_PORT),
       auth: {
-        user: "api",
-        pass: "c20a730263dfdfac5cec3c6df59c3e02",
+        user: process.env.MAILER_USER,
+        pass: process.env.MAILER_PASS,
       },
     });
     const verifyEmailHtml = `<p>Click <a href="${process.env.DOMAIN}/verifyEmail?token=${token}" >here</a> to "verify your email" 
@@ -53,7 +53,7 @@ export const sendEmail = async ({
     const resetPasswordEmailHtml = `<p>Click <a href="${process.env.DOMAIN}/resetpassword?token=${token}" >here</a> to  "reset your password"
        or copy and paste the link below in your browser <br> ${process.env.DOMAIN}/resetpassword?token=${token}</p>`;
     const mailOptions = {
-      from: "info@demomailtrap.co",
+      from: "Notesify <onboarding@resend.dev>",
       to: email,
       subject:
         mailType === "VERIFY" ? "Verify your email" : "Reset your password",
