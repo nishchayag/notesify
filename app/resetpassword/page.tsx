@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-const page = () => {
+const ResetPassword = () => {
   const params = useSearchParams();
   const token = params.get("token");
   const router = useRouter();
@@ -46,7 +46,7 @@ const page = () => {
         token: tokenVal,
         password,
       });
-      console.log("password reset successful");
+      console.log("password reset successful", response.data);
       router.push("/login");
     } catch (error) {
       console.error("Error resetting password: ", error);
@@ -97,4 +97,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default ResetPassword;

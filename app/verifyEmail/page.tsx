@@ -1,9 +1,9 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { signOut, useSession } from "next-auth/react";
-function page() {
+import { signOut } from "next-auth/react";
+function VerifyEmail() {
   const [tokenVal, setTokenVal] = useState("");
   const urlParams = useSearchParams();
   const token = urlParams.get("token");
@@ -40,4 +40,4 @@ function page() {
   );
 }
 
-export default page;
+export default VerifyEmail;

@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import NoteCard from "@/components/NoteCard";
 import { useRouter } from "next/navigation";
-function notesPage() {
+function NotesPage() {
   const [notesArray, setNotesArray] = useState<Array<Object>>([]);
   const [filteredNotesArray, setFilteredNotesArray] = useState<Array<Object>>(
     []
@@ -114,4 +114,4 @@ function notesPage() {
   }
 }
 
-export default notesPage;
+export default NotesPage;

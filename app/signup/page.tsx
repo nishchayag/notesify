@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import axios from "axios";
-const page = () => {
+const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -49,6 +49,10 @@ const page = () => {
       setLoading(false);
     }
   };
+
+  if (loading) {
+    return <h1 className="text-center text-3xl">Loading...</h1>;
+  }
 
   return (
     <div className="mt-20">
@@ -157,4 +161,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Signup;

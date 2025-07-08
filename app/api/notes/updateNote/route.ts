@@ -9,9 +9,9 @@ export async function POST(request: NextRequest) {
     if (!currNote) {
       return NextResponse.json({ error: "Note does not exist" });
     }
-    (currNote.title = title),
-      (currNote.content = content),
-      (currNote.isCompleted = isCompleted);
+    currNote.title = title;
+    currNote.content = content;
+    currNote.isCompleted = isCompleted;
     const updatedNote = await currNote.save();
     return NextResponse.json(updatedNote);
   } catch (error) {
