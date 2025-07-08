@@ -4,7 +4,7 @@ import noteModel from "@/models/note.model";
 
 export async function POST(request: NextRequest) {
   try {
-    connectDB();
+    await connectDB();
     const { noteId } = await request.json();
     if (!noteId) {
       return NextResponse.json({ error: "Please provide note id" });

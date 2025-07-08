@@ -36,11 +36,22 @@ function notesPage() {
   }, [session, status]);
   console.log(filteredNotesArray);
 
+  useEffect(() => {
+    const lowerSearch = searchFilter.toLowerCase();
+
+    const filteredArray = notesArray.filter(
+      (note: any) =>
+        note.title.toLowerCase().includes(lowerSearch) ||
+        note.content.toLowerCase().includes(lowerSearch)
+    );
+    setFilteredNotesArray(filteredArray);
+  }, [searchFilter, notesArray]);
+
   if (loading) {
     return <h1>Loading notes</h1>;
   }
   if (status === "authenticated" && Array.isArray(filteredNotesArray)) {
-    if (filteredNotesArray.length == 0) {
+    if (filteredNotesArray.length === 0) {
       return (
         <div className="flex flex-col justify-center items-center gap-8">
           <h1 className="text-center text-3xl">

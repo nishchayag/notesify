@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import "./note.model";
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   notes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Note",
+      ref: "noteModel",
     },
   ],
 });

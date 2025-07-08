@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-function page() {
+function CreateNote() {
   const [form, setForm] = useState({
     title: "",
     content: "",
@@ -70,4 +70,4 @@ function page() {
   );
 }
 
-export default page;
+export default CreateNote;

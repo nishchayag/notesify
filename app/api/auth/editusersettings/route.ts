@@ -26,6 +26,6 @@ export async function POST(request: NextRequest) {
     userInDB.save();
     return NextResponse.json({ message: "User settings edited successfully" });
   } catch (error) {
-    return NextResponse.json({ error: "could not change details" });
+    return NextResponse.json({ error: "could not change details" + error });
   }
 }

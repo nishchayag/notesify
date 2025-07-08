@@ -4,8 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { sendEmail } from "@/libs/nodemailer";
-function page() {
+function LoginPage() {
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -49,7 +48,9 @@ function page() {
       setLoading(false);
     }
   };
-
+  if (loading) {
+    return <h1 className="text-center text-3xl">Loading...</h1>;
+  }
   return (
     <div className="mt-20">
       <h1 className="text-5xl text-center">LOGIN</h1>
@@ -154,4 +155,4 @@ function page() {
   );
 }
 
-export default page;
+export default LoginPage;

@@ -41,11 +41,11 @@ export const sendEmail = async ({
       );
     }
     var transporter = nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
-      port: 2525,
+      host: "live.smtp.mailtrap.io",
+      port: 587,
       auth: {
-        user: process.env.MAILER_USER,
-        pass: process.env.MAILER_PASS,
+        user: "api",
+        pass: "c20a730263dfdfac5cec3c6df59c3e02",
       },
     });
     const verifyEmailHtml = `<p>Click <a href="${process.env.DOMAIN}/verifyEmail?token=${token}" >here</a> to "verify your email" 

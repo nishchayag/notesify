@@ -1,5 +1,4 @@
 import { authOptions } from "@/libs/authOptions";
-import connectDB from "@/libs/connectDB";
 import NextAuth from "next-auth";
 
 const handler = NextAuth(authOptions);

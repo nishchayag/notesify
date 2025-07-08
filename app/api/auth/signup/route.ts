@@ -3,9 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import connectDB from "@/libs/connectDB";
 import { sendEmail } from "@/libs/nodemailer";
-await connectDB();
+import noteModel from "@/models/note.model";
 export async function POST(request: NextRequest) {
   try {
+    await connectDB();
     const { email, password, name } = await request.json();
 
     const currUser = await userModel.findOne({ email });
@@ -23,7 +24,15 @@ export async function POST(request: NextRequest) {
       password: hashedPassword,
       provider: "credentials",
     });
+
     console.log("User registered successfully: ", newUser);
+
+    await noteModel.create({
+      email,
+      title: "Welcome To Notesify",
+      content: "This is your welcome note, edit or delete it anytime!",
+    });
+
     sendEmail({ email, mailType: "VERIFY" });
     console.log("verification email sent");
     return NextResponse.json({

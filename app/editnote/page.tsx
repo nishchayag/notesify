@@ -3,9 +3,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import React from "react";
 import axios from "axios";
-import { title } from "process";
 import { useSession } from "next-auth/react";
-const page = () => {
+const EditNote = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const params = useSearchParams();
@@ -64,6 +63,8 @@ const page = () => {
         noteId: params.get("noteid"),
         email: session?.user.email,
       });
+      console.log(response.data);
+
       router.push("/notes");
     } catch (error) {
       console.error("error deleting note: ", error);
@@ -145,4 +146,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default EditNote;
