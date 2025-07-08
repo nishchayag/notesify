@@ -5,14 +5,19 @@ import React, { useEffect, useState } from "react";
 import NoteCard from "@/components/NoteCard";
 import { useRouter } from "next/navigation";
 function NotesPage() {
-  const [notesArray, setNotesArray] = useState<Array<Object>>([]);
-  const [filteredNotesArray, setFilteredNotesArray] = useState<Array<Object>>(
-    []
-  );
+  const [notesArray, setNotesArray] = useState<Array<NoteStruc>>([]);
+  const [filteredNotesArray, setFilteredNotesArray] = useState<
+    Array<NoteStruc>
+  >([]);
   const router = useRouter();
   const { data: session, status } = useSession();
   const [loading, setloading] = useState(false);
   const [searchFilter, setSearchFilter] = useState("");
+  interface NoteStruc {
+    _id: string;
+    title: string;
+    content: string;
+  }
   useEffect(() => {
     const fetchAllNotes = async () => {
       if (status === "authenticated") {
