@@ -78,7 +78,7 @@ export const sendEmail = async ({
 
       <p style="margin-top: 20px; font-size: 14px; color: #666;">
         If the button doesn't work, copy and paste the following link into your browser:<br />
-        <a href="${process.env.DOMAIN}/verify?token=${token}" style="color: #4f46e5;">${process.env.DOMAIN}/verify?token=${token}</a>
+        <a href="${process.env.DOMAIN}/verifyEmail?token=${token}" style="color: #4f46e5;">${process.env.DOMAIN}/verifyEmail?token=${token}</a>
       </p>
 
       <p style="margin-top: 30px; font-size: 14px; color: #666;">
