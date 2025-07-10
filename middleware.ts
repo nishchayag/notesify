@@ -39,6 +39,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/notes", request.url));
   } else if (!isAuthenticated && isVerifyPage) {
     return NextResponse.redirect(new URL("/login", request.url));
+  } else if (isAuthenticated && !isVerified && isProtectedPage) {
+    return NextResponse.redirect(new URL("/askToVerify", request.url));
   } else if (isAuthenticated && isVerified && isVerifyPage) {
     return NextResponse.redirect(new URL("/notes", request.url));
   }
