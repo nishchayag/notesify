@@ -42,6 +42,7 @@ export const sendEmail = async ({
       );
     }
     // this is the nodemailer code to send email using mailtrap
+
     // var transporter = nodemailer.createTransport({
     //   host: process.env.MAILER_HOST,
     //   port: Number(process.env.MAILER_PORT),
@@ -53,8 +54,6 @@ export const sendEmail = async ({
     // const mailResponse = await transporter.sendMail(mailOptions);
     // return mailResponse;
 
-    // const verifyEmailHtml = `<p>Click <a href="${process.env.DOMAIN}/verifyEmail?token=${token}" >here</a> to "verify your email"
-    //    or copy and paste the link below in your browser <br> ${process.env.DOMAIN}/verifyEmail?token=${token}</p>`;
     const verifyEmailHtml = `
    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f5; padding: 40px;">
     <div style="max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);">
@@ -67,7 +66,7 @@ export const sendEmail = async ({
       <table cellspacing="0" cellpadding="0" style="margin: 25px 0;">
         <tr>
           <td align="center" bgcolor="#4f46e5" style="border-radius: 8px;">
-            <a href="${process.env.DOMAIN}/verify?token=${token}"
+            <a href="${process.env.DOMAIN}/verifyEmail?token=${token}"
               target="_blank"
               style="display: inline-block; padding: 12px 24px; font-size: 15px; color: #ffffff; text-decoration: none; font-weight: 500; font-family: sans-serif;">
               ✅ Verify Email
@@ -90,8 +89,42 @@ export const sendEmail = async ({
   </div>
   `;
 
-    const resetPasswordEmailHtml = `<p>Click <a href="${process.env.DOMAIN}/resetpassword?token=${token}" >here</a> to  "reset your password"
-       or copy and paste the link below in your browser <br> ${process.env.DOMAIN}/resetpassword?token=${token}</p>`;
+    const resetPasswordEmailHtml = `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f5; padding: 40px;">
+      <div style="max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);">
+        <h2 style="color: #4f46e5; margin-bottom: 10px;">Reset Your Notesify Password 🔐</h2>
+        <p style="color: #444; font-size: 16px;">
+          You requested a password reset for your Notesify account.
+        </p>
+        <p style="margin-top: 20px; font-size: 16px;">Click the button below to set a new password:</p>
+  
+        <table cellspacing="0" cellpadding="0" style="margin: 25px 0;">
+          <tr>
+            <td align="center" bgcolor="#4f46e5" style="border-radius: 8px;">
+              <a href="${process.env.DOMAIN}/resetpassword?token=${token}"
+                target="_blank"
+                style="display: inline-block; padding: 12px 24px; font-size: 15px; color: #ffffff; text-decoration: none; font-weight: 500; font-family: sans-serif;">
+                🔁 Reset Password
+              </a>
+            </td>
+          </tr>
+        </table>
+  
+        <p style="margin-top: 20px; font-size: 14px; color: #666;">
+          If the button doesn't work, copy and paste the following link into your browser:<br />
+          <a href="${process.env.DOMAIN}/resetpassword?token=${token}" style="color: #4f46e5;">
+            ${process.env.DOMAIN}/resetpassword?token=${token}
+          </a>
+        </p>
+  
+        <p style="margin-top: 30px; font-size: 14px; color: #666;">
+          If you didn't request this, you can safely ignore this email.
+        </p>
+  
+        <p style="margin-top: 20px; font-size: 14px; color: #999;">— The Notesify Team</p>
+      </div>
+    </div>
+  `;
 
     // this is code to send email using Resend
 
