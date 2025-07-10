@@ -67,7 +67,7 @@ export const sendEmail = async ({
       <table cellspacing="0" cellpadding="0" style="margin: 25px 0;">
         <tr>
           <td align="center" bgcolor="#4f46e5" style="border-radius: 8px;">
-            <a href="${process.env.DOMAIN}/verify?token=${token}"
+            <a href="${process.env.DOMAIN}/verifyEmail?token=${token}"
               target="_blank"
               style="display: inline-block; padding: 12px 24px; font-size: 15px; color: #ffffff; text-decoration: none; font-weight: 500; font-family: sans-serif;">
               ✅ Verify Email
