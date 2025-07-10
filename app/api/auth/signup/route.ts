@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import connectDB from "@/libs/connectDB";
 import { sendEmail } from "@/libs/nodemailer";
-import Note from "@/models/note.model";
+
 export async function POST(request: NextRequest) {
   try {
     await connectDB();
