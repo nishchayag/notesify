@@ -1,6 +1,7 @@
 import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import path from "path";
 
 const authPages = [
   "/",
@@ -27,11 +28,13 @@ export async function middleware(request: NextRequest) {
   });
   const isVerified = token?.isVerified;
   const isAuthenticated = !!token;
-  const isAuthPage = authPages.includes(pathname);
+  const isAuthPage = authPages.some(
+    (path) => pathname === path || pathname.startsWith(path)
+  );
   const isProtectedPage = protectedPages.some((path) =>
     pathname.startsWith(path)
   );
-  const isVerifyPage = verifyPage.includes(pathname);
+  const isVerifyPage = pathname === verifyPage;
 
   if (!isAuthenticated && isProtectedPage) {
     return NextResponse.redirect(new URL("/login", request.url));
