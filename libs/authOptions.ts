@@ -47,6 +47,7 @@ export const authOptions: NextAuthOptions = {
             id: userInDB._id,
             email: userInDB.email,
             name: userInDB.name,
+            isVerified: userInDB.isVerified,
           };
         } catch (error) {
           console.error("error logging in: ", error);
@@ -56,13 +57,14 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, trigger }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
         const userInDB = await userModel.findOne({ email: user.email });
         token.isVerified = userInDB?.isVerified || false;
       }
+      console.log("💥 JWT TOKEN:", token);
       return token;
     },
     async session({ session, token }) {
@@ -70,9 +72,10 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id;
         session.user.isVerified = token.isVerified;
       }
+      console.log("🟢 SESSION:", session);
       return session;
     },
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       try {
         await connectDB();
         const userInDB = await userModel.findOne({ email: user.email });

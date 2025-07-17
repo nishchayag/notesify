@@ -129,7 +129,7 @@ export const sendEmail = async ({
     // this is code to send email using Resend
 
     const mailOptions = {
-      from: "Notesify <no-reply@notesify.nishchayag.live>",
+      from: "Notesify <notesify@nishchayag.live>",
       to: email,
       subject:
         mailType === "VERIFY" ? "Verify your email" : "Reset your password",
