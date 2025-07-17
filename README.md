@@ -1,38 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🗒️ Notesify
 
-Currently live at: notesify.nishchayag.live
+Notesify is a minimal, fullstack note-taking web application built with a strong focus on **backend architecture, authentication**, and **clean code structure**. Designed as both a learning project and a real-world portfolio piece, Notesify lets users securely create, view, and manage their notes with a simple interface and robust backend.
 
-## Getting Started
+🔗 **Live App:** [https://notesify.nishchayag.live](https://notesify.nishchayag.live)
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Tech Stack
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Framework:** Next.js (App Router)
+- **Styling:** Tailwind CSS
+- **Database:** MongoDB (via Mongoose)
+- **Authentication:** NextAuth.js
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎯 Features
 
-## Learn More
+- 🔐 Secure authentication via email (NextAuth)
+- 📝 Create, read, and delete personal notes
+- 📄 Markdown support _(coming soon)_
+- 📁 Clean and modular folder structure
+- 💾 Fully persistent MongoDB data layer
 
-To learn more about Next.js, take a look at the following resources:
+> 📌 **Note:**  
+> This is v1 of Notesify, focused on functionality and backend structure. A fully redesigned and feature-rich Notesify v2 is planned for release very soon.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📸 Screenshots
 
-## Deploy on Vercel
+> _This version is backend-focused, with a clean but minimal frontend. A polished UI/UX upgrade is planned for Notesify v2._
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🧠 Purpose & Roadmap
+
+- ✅ Built as a **practice project** to strengthen backend development skills
+- 🎓 Will be rebuilt and redesigned as a **college capstone project (Notesify v2)** in the future
+- 💼 Serves as a **portfolio project** for fullstack web development roles
+
+---
+
+⭐️ If you find this project interesting or helpful, please consider giving it a star!
+
+---
+
+## 🧑‍💻 Author
+
+**Nishchay Agarwal**  
+Fullstack Web Developer  
+B.Tech Student  
+Passionate about clean code, fullstack apps and systems, and developer-focused tools.
