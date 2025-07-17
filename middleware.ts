@@ -1,7 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import path from "path";
 
 const authPages = [
   "/",
@@ -22,12 +21,15 @@ const verifyPage = "/askToVerify";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
   });
-  const isVerified = token?.isVerified;
+
   const isAuthenticated = !!token;
+  const isVerified = token?.isVerified;
+
   const isAuthPage = authPages.some(
     (path) => pathname === path || pathname.startsWith(path)
   );
@@ -36,17 +38,27 @@ export async function middleware(request: NextRequest) {
   );
   const isVerifyPage = pathname === verifyPage;
 
-  if (!isAuthenticated && isProtectedPage) {
+  // Case 1: Not authenticated, accessing protected or verify page
+  if (!isAuthenticated && (isProtectedPage || isVerifyPage)) {
     return NextResponse.redirect(new URL("/login", request.url));
-  } else if (isAuthenticated && isAuthPage) {
-    return NextResponse.redirect(new URL("/notes", request.url));
-  } else if (!isAuthenticated && isVerifyPage) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  } else if (isAuthenticated && !isVerified && isProtectedPage) {
-    return NextResponse.redirect(new URL("/askToVerify", request.url));
-  } else if (isAuthenticated && isVerified && isVerifyPage) {
+  }
+
+  // Case 2: Authenticated, verified or not, accessing auth pages (login/signup)
+  if (isAuthenticated && isAuthPage) {
     return NextResponse.redirect(new URL("/notes", request.url));
   }
+
+  // Case 3: Authenticated but not verified, accessing a protected page (but not the verify page)
+  if (isAuthenticated && !isVerified && isProtectedPage && !isVerifyPage) {
+    return NextResponse.redirect(new URL("/askToVerify", request.url));
+  }
+
+  // Case 4: Authenticated AND verified, but trying to access /askToVerify
+  if (isAuthenticated && isVerified && isVerifyPage) {
+    return NextResponse.redirect(new URL("/notes", request.url));
+  }
+
+  // All good — allow request
   return NextResponse.next();
 }
 
