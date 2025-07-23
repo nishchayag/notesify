@@ -19,7 +19,7 @@ function CreateNote() {
         title: form.title,
         content: form.content,
       });
-      console.log("note created successfully: ", response.data);
+
       router.push("/notes");
     } catch (error) {
       console.error("error creating a note: ", error);

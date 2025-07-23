@@ -18,7 +18,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log("authorize function hit", credentials);
         // Add logic here to look up the user from the credentials supplied
         if (!credentials?.email || !credentials.password) {
           return null;
@@ -64,7 +63,7 @@ export const authOptions: NextAuthOptions = {
         const userInDB = await userModel.findOne({ email: user.email });
         token.isVerified = userInDB?.isVerified || false;
       }
-      console.log("💥 JWT TOKEN:", token);
+
       return token;
     },
     async session({ session, token }) {
@@ -72,7 +71,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id;
         session.user.isVerified = token.isVerified;
       }
-      console.log("🟢 SESSION:", session);
+
       return session;
     },
     async signIn({ user, account }) {

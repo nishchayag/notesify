@@ -31,7 +31,6 @@ function Dashboard() {
         name,
         password,
       });
-      console.log(response.data);
 
       signOut();
       router.push("/login");

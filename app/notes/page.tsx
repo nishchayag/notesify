@@ -26,7 +26,6 @@ function NotesPage() {
           const response = await axios.post("/api/notes/fetchNotes", {
             email: session.user.email,
           });
-          console.log(response);
 
           if (Array.isArray(response.data)) {
             setNotesArray(response.data);
@@ -43,8 +42,6 @@ function NotesPage() {
     };
     fetchAllNotes();
   }, [session, status]);
-
-  console.log(filteredNotesArray);
 
   useEffect(() => {
     const lowerSearch = searchFilter.toLowerCase();

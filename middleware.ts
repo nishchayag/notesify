@@ -22,12 +22,6 @@ export async function middleware(request: NextRequest) {
   const isAuthenticated = !!token;
   const isVerified = token?.isVerified;
 
-  console.log("🧪 Middleware", {
-    pathname,
-    isAuthenticated,
-    isVerified,
-  });
-
   if (!isAuthenticated && isAuthPage(pathname)) {
     return NextResponse.next();
   }
@@ -47,7 +41,6 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// ✅ Only run middleware on non-static, non-api routes
 export const config = {
   matcher: ["/((?!_next|api|favicon.ico).*)"],
 };

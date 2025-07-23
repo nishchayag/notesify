@@ -26,16 +26,15 @@ const EditNote = () => {
       const response = await axios.post("/api/notes/fetchNote", {
         noteId: noteid,
       });
-      console.log(response.data);
+
       const { title, content, isCompleted } = response.data;
-      console.log({ title, content, isCompleted });
+
       setForm({
         ...form,
         updatedTitle: title,
         updatedContent: content,
         updatedIsCompleted: isCompleted,
       });
-      console.log(form);
     };
     fetchNoteUsingId();
   }, [noteid]);
@@ -49,7 +48,7 @@ const EditNote = () => {
         content: form.updatedContent,
         isCompleted: form.updatedIsCompleted,
       });
-      console.log(response.data);
+
       router.push("/notes");
     } catch (error) {
       console.error("could not edit note: ", error);
@@ -65,7 +64,6 @@ const EditNote = () => {
         noteId: params.get("noteid"),
         email: session?.user.email,
       });
-      console.log(response.data);
 
       router.push("/notes");
     } catch (error) {

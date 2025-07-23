@@ -19,7 +19,7 @@ function VerifyEmail() {
       const response = await axios.post("/api/auth/verifyEmail", {
         token: tokenVal,
       });
-      console.log("Email verified successfully: ", response.data);
+
       signOut({ callbackUrl: "/login" });
     } catch (error) {
       console.error("error verifying user: ", error);

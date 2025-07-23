@@ -18,7 +18,7 @@ const ForgotPassword = () => {
     try {
       e.preventDefault();
       const response = await axios.post("/api/auth/forgotPassword", { email });
-      console.log(response.data);
+
       router.push("/resetEmailSent");
     } catch (error) {
       console.error("Error while requesting password reset:", error);

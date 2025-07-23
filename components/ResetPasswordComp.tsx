@@ -30,7 +30,6 @@ const ResetPassword = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(tokenVal);
 
     try {
       setLoading(true);
@@ -46,7 +45,7 @@ const ResetPassword = () => {
         token: tokenVal,
         password,
       });
-      console.log("password reset successful", response.data);
+
       router.push("/login");
     } catch (error) {
       console.error("Error resetting password: ", error);

@@ -40,7 +40,7 @@ const Signup = () => {
         name: form.name,
         password: form.password,
       });
-      console.log(response);
+
       router.push("/login");
     } catch (error) {
       console.error("error while registering: ", error);
