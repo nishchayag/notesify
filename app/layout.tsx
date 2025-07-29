@@ -5,6 +5,7 @@ import SessionWrapper from "@/components/SessionWrapper";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "next-themes";
 import Footer from "@/components/Footer";
+import { Toaster } from "sonner";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -33,8 +34,9 @@ export default function RootLayout({
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <Navbar />
-            {children}
+            <div className="min-h-screen">{children}</div>
             <Footer />
+            <Toaster richColors position="top-right" closeButton expand />
           </ThemeProvider>
         </body>
       </SessionWrapper>

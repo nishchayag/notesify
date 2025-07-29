@@ -31,13 +31,15 @@ export default function LandingPage() {
         transition={{ duration: 0.9 }}
         className="max-w-3xl text-center mt-16"
       >
-        <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-          Capture ideas, jot thoughts, stay organized — effortlessly.
+        <h1 className="text-4xl md:text-6xl font-bold leading-tight text-wrap">
+          Capture ideas, <br />
+          jot thoughts, <br />
+          stay organized effortlessly.
         </h1>
         <p className="mt-6 text-lg text-muted-foreground">
-          Notesify is your personal note-taking space — clean, fast, and made
-          for focus. Perfect for students, creators, and anyone who thinks
-          better in words.
+          Notesify is your personal note-taking space clean, fast, and made for
+          focus. Perfect for students, creators, and anyone who thinks better in
+          words.
         </p>
 
         <div className="mt-8 flex justify-center gap-4">

@@ -1,9 +1,11 @@
 "use client";
 import axios from "axios";
+import { NoteStruc } from "@/components/NoteCard";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import NoteCard from "@/components/NoteCard";
 import { useRouter } from "next/navigation";
+import { LoaderThree } from "@/components/ui/LoaderThree";
 function NotesPage() {
   const [notesArray, setNotesArray] = useState<Array<NoteStruc>>([]);
   const [filteredNotesArray, setFilteredNotesArray] = useState<
@@ -13,11 +15,7 @@ function NotesPage() {
   const { data: session, status } = useSession();
   const [loading, setloading] = useState(false);
   const [searchFilter, setSearchFilter] = useState("");
-  interface NoteStruc {
-    _id: string;
-    title: string;
-    content: string;
-  }
+
   useEffect(() => {
     const fetchAllNotes = async () => {
       if (status === "authenticated") {
@@ -33,8 +31,6 @@ function NotesPage() {
           }
         } catch (error) {
           console.error("Couldnt fetch notes: ", error);
-          // setNotesArray([]);
-          // setFilteredNotesArray([]);
         } finally {
           setloading(false);
         }
@@ -55,16 +51,16 @@ function NotesPage() {
   }, [searchFilter, notesArray]);
 
   if (loading) {
-    return <h1>Loading notes</h1>;
+    return <LoaderThree />;
   }
   if (status === "authenticated" && Array.isArray(filteredNotesArray)) {
     if (filteredNotesArray.length === 0) {
       return (
-        <div className="flex flex-col justify-center items-center gap-8">
+        <div className="flex flex-col items-center justify-center gap-8 py-10 px-4">
           <input
             type="text"
             placeholder="Search note"
-            className="border w-100 px-4 py-3 rounded-xl"
+            className="w-full max-w-md px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white placeholder:text-neutral-500"
             onChange={(e) => setSearchFilter(e.target.value)}
             value={searchFilter}
           />
@@ -72,24 +68,23 @@ function NotesPage() {
             onClick={() => {
               router.push("/createnote");
             }}
-            className=" bg-white text-black px-4 py-3 rounded-xl cursor-pointer"
+            className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl font-semibold transition"
           >
-            {" "}
             Create Note
           </button>
-          <h1 className="text-center text-3xl">
+          <h1 className="text-center text-xl text-neutral-700 dark:text-neutral-300 font-medium">
             No notes are present, please create a note, or change search filter
           </h1>
         </div>
       );
     } else {
       return (
-        <div className="flex flex-col gap-10 justify-center items-center">
-          <div className="flex flex-row gap-4">
+        <div className="flex flex-col items-center justify-center gap-10 py-10 px-4">
+          <div className="flex flex-col sm:flex-row gap-4 w-full max-w-4xl">
             <input
               type="text"
               placeholder="Search note"
-              className="border w-100 px-4 py-3 rounded-xl"
+              className="flex-1 px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white placeholder:text-neutral-500"
               onChange={(e) => setSearchFilter(e.target.value)}
               value={searchFilter}
             />
@@ -97,13 +92,12 @@ function NotesPage() {
               onClick={() => {
                 router.push("/createnote");
               }}
-              className=" bg-white text-black px-4 py-3 rounded-xl cursor-pointer"
+              className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl font-semibold transition"
             >
-              {" "}
               Create Note
             </button>
           </div>
-          <div className="grid grid-cols-3 gap-10 px-20 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full px-2 sm:px-4 md:px-8 lg:px-20">
             {filteredNotesArray.map((note, index) => (
               <div key={index}>
                 <NoteCard noteItem={note} />

@@ -1,14 +1,16 @@
 "use client";
-
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
-
+import { Input } from "@/components/ui/input";
+import { Eye, EyeOff } from "lucide-react";
 function LoginPage() {
   const router = useRouter();
-
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [password, setPassword] = useState("");
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -25,61 +27,89 @@ function LoginPage() {
     e.preventDefault();
 
     setLoading(true);
-
-    const response = await signIn("credentials", {
-      email: form.email,
-      password: form.password,
-      redirect: false,
-    });
-
-    if (response?.ok) {
-      toast.success("Logged in successfully!");
-      router.push("/notes");
-    } else {
-      toast.error("Login failed. Please check your credentials.");
+    if (!form.email || !form.password) {
+      toast.error("Please enter both email and password.");
+      setLoading(false);
+      return;
     }
+    try {
+      const response = await signIn("credentials", {
+        email: form.email,
+        password: form.password,
+        redirect: false,
+      });
 
-    setLoading(false);
+      if (response?.ok) {
+        toast.success("Logged in successfully!");
+        router.push("/notes");
+      } else {
+        toast.error("Login failed. Please check your credentials.");
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("An error occurred while logging in.");
+      setLoading(false);
+    }
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen px-4">
-      <div className="bg-white dark:bg-neutral-900 p-8 rounded-2xl shadow-xl w-full max-w-md">
-        <h1 className="text-3xl font-bold mb-6 text-center">Welcome Back 👋</h1>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="bg-white dark:bg-neutral-900 p-8 rounded-2xl shadow-xl w-full max-w-md"
+      >
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-3xl font-bold mb-6 text-center"
+        >
+          Welcome back 👋
+        </motion.h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
-            <label htmlFor="email" className="text-sm font-medium block mb-1">
+            <label
+              htmlFor="identifier"
+              className="text-sm font-medium block mb-1"
+            >
               Email
             </label>
-            <input
-              id="email"
+            <Input
+              id="identifier"
               type="email"
               placeholder="example@email.com"
-              className="w-full px-4 py-2 border rounded-xl bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white"
+              value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               required
             />
           </div>
 
-          <div>
-            <label
-              htmlFor="password"
-              className="text-sm font-medium block mb-1"
-            >
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              className="w-full px-4 py-2 border rounded-xl bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white"
+          <div className="relative">
+            <Input
+              type={passwordVisible ? "text" : "password"}
+              placeholder="Password"
+              value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
+              className="pr-10"
               required
             />
+            <button
+              type="button"
+              onClick={() => setPasswordVisible(!passwordVisible)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary"
+            >
+              {passwordVisible ? <Eye size={18} /> : <EyeOff size={18} />}
+            </button>
           </div>
 
-          <button
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            whileHover={{ scale: !isDisabled && !loading ? 1.01 : 1 }}
             type="submit"
             disabled={isDisabled || loading}
             className={`w-full py-3 rounded-xl transition font-medium ${
@@ -88,21 +118,12 @@ function LoginPage() {
                 : "bg-red-600 hover:bg-red-700 text-white"
             }`}
           >
-            {loading ? "Logging in..." : "Log In"}
-          </button>
+            {loading ? "Logging in..." : "Login"}
+          </motion.button>
         </form>
 
-        <div className="text-sm text-center mt-4">
-          <button
-            onClick={() => router.push("/forgotPassword")}
-            className="text-red-500 hover:underline"
-          >
-            Forgot Password?
-          </button>
-        </div>
-
         <p className="text-sm text-center mt-6">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             href="/signup"
             className="text-red-500 hover:underline font-medium"
@@ -110,7 +131,7 @@ function LoginPage() {
             Sign Up
           </Link>
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 }

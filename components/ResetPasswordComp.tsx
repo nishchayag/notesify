@@ -3,6 +3,7 @@ import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { LoaderThree } from "./ui/LoaderThree";
 const ResetPassword = () => {
   const params = useSearchParams();
   const token = params.get("token");
@@ -55,7 +56,7 @@ const ResetPassword = () => {
   };
 
   if (loading) {
-    return <h1 className="text-3xl text-center">Loading...</h1>;
+    return <LoaderThree />;
   }
 
   return (

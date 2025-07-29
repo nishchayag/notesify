@@ -40,37 +40,49 @@ function Dashboard() {
   };
 
   return (
-    <div className="mt-20 flex flex-col justify-center items-center">
-      <h1 className="text-3xl">User Details for {session?.user.email}</h1>
+    <div className="mt-20 flex flex-col justify-center items-center px-4 gap-10">
+      <h1 className="text-4xl sm:text-5xl font-bold text-center text-neutral-800 dark:text-white">
+        User Details for {session?.user.email}
+      </h1>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 justify-center items-center mt-10"
+        className="flex flex-col gap-6 justify-center items-center w-full max-w-xl"
       >
-        <label htmlFor="name" className="text-xl">
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          className="border px-3 py-2 rounded-xl w-100"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <label htmlFor="password" className="text-xl">
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          className="border px-3 py-2 rounded-xl w-100"
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="w-full">
+          <label
+            htmlFor="name"
+            className="text-lg font-medium text-neutral-700 dark:text-neutral-200"
+          >
+            Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            className="mt-2 w-full px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white"
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="w-full">
+          <label
+            htmlFor="password"
+            className="text-lg font-medium text-neutral-700 dark:text-neutral-200"
+          >
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            className="mt-2 w-full px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
         <button
           type="submit"
-          className={`bg-white text-black px-4 py-3 rounded-xl ${
-            isDisabled ? "cursor-not-allowed" : "cursor-pointer"
-          } `}
+          className={`w-full bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl transition ${
+            isDisabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
+          }`}
           disabled={isDisabled}
         >
           Submit

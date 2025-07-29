@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import React from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import { LoaderThree } from "./ui/LoaderThree";
 const EditNote = () => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -72,42 +73,56 @@ const EditNote = () => {
   };
 
   if (loading) {
-    return <h1>Loading...</h1>;
+    return <LoaderThree />;
   }
 
   return (
-    <div className="flex flex-col justify-center items-center gap-8 mt-20">
-      <h1 className="text-5xl">Edit Note</h1>
+    <div className="flex flex-col justify-center items-center gap-10 mt-20 px-4">
+      <h1 className="text-4xl sm:text-5xl font-bold text-center text-neutral-800 dark:text-white">
+        Edit Note
+      </h1>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-5 justify-center items-center"
+        className="flex flex-col gap-6 justify-center items-center w-full max-w-xl"
       >
-        <label htmlFor="title" className="text-xl">
-          Title
-        </label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          className="border w-100 px-4 py-3 rounded-xl"
-          value={form.updatedTitle}
-          onChange={(e) => setForm({ ...form, updatedTitle: e.target.value })}
-        />
-        <label htmlFor="content" className="text-xl">
-          Content
-        </label>
-        <textarea
-          id="content"
-          name="content"
-          className="border w-100 h-80 px-4 py-3 rounded-xl overflow-y-scroll"
-          value={form.updatedContent}
-          onChange={(e) => setForm({ ...form, updatedContent: e.target.value })}
-        />
-        <div className=" flex flex-row gap-4">
+        <div className="w-full">
+          <label
+            htmlFor="title"
+            className="text-lg font-medium text-neutral-700 dark:text-neutral-200"
+          >
+            Title
+          </label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            className="mt-2 w-full px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white"
+            value={form.updatedTitle}
+            onChange={(e) => setForm({ ...form, updatedTitle: e.target.value })}
+          />
+        </div>
+        <div className="w-full">
+          <label
+            htmlFor="content"
+            className="text-lg font-medium text-neutral-700 dark:text-neutral-200"
+          >
+            Content
+          </label>
+          <textarea
+            id="content"
+            name="content"
+            className="mt-2 w-full h-80 px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white resize-none"
+            value={form.updatedContent}
+            onChange={(e) =>
+              setForm({ ...form, updatedContent: e.target.value })
+            }
+          />
+        </div>
+        <div className="flex items-center gap-3 w-full">
           <input
             type="checkbox"
             id="iscompleted"
-            className="scale-150"
+            className="scale-125 accent-red-500"
             checked={form.updatedIsCompleted}
             onChange={() =>
               setForm({
@@ -116,28 +131,32 @@ const EditNote = () => {
               })
             }
           />
-          <label htmlFor="iscompleted">Is Completed?</label>
+          <label
+            htmlFor="iscompleted"
+            className="text-neutral-700 dark:text-neutral-200 text-sm sm:text-base"
+          >
+            Mark as Completed
+          </label>
         </div>
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-wrap justify-center gap-4 mt-4">
           <button
             onClick={() => router.push("/notes")}
-            className=" bg-white text-black px-4 py-3 rounded-xl cursor-pointer"
+            className="bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-black dark:text-white px-6 py-3 rounded-xl transition"
+            type="button"
           >
-            {" "}
             Cancel
           </button>
           <button
             type="submit"
-            className=" bg-white text-black px-4 py-3 rounded-xl cursor-pointer"
+            className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl transition"
           >
-            {" "}
             Submit
           </button>
           <button
             onClick={handleDelete}
-            className=" bg-white text-black px-4 py-3 rounded-xl cursor-pointer"
+            type="button"
+            className="bg-neutral-500 hover:bg-neutral-600 text-white px-6 py-3 rounded-xl transition"
           >
-            {" "}
             Delete Note
           </button>
         </div>

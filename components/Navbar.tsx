@@ -39,6 +39,8 @@ const Navbar = () => {
 
       {/* Right Side */}
       <div className="flex items-center gap-4" ref={dropdownRef}>
+        <ModeToggle />
+
         {session ? (
           <button
             onClick={() => setIsDropdownOpen((prev) => !prev)}
@@ -83,7 +85,7 @@ const Navbar = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2 }}
-              className="absolute right-0 mt-2 w-44 bg-white dark:bg-neutral-900 rounded-lg shadow z-50 py-2 border dark:border-neutral-700"
+              className="absolute right-0 mt-50 w-44 bg-white dark:bg-neutral-900 rounded-lg shadow z-50 py-2 border dark:border-neutral-700"
             >
               <Link
                 href="/notes"
@@ -106,8 +108,6 @@ const Navbar = () => {
             </motion.div>
           )}
         </AnimatePresence>
-
-        <ModeToggle />
       </div>
     </nav>
   );

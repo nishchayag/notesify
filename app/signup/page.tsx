@@ -1,116 +1,160 @@
 "use client";
-import React, { useEffect } from "react";
-import { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import Link from "next/link";
-import axios from "axios";
-const Signup = () => {
-  const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({
-    email: "",
-    name: "",
-    password: "",
-  });
+import { Input } from "@/components/ui/input";
+import { Eye, EyeOff } from "lucide-react";
+import { motion } from "framer-motion";
+
+function SignupPage() {
   const router = useRouter();
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [loading, setLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
-    if (
-      form.email.length == 0 ||
-      form.password.length == 0 ||
-      form.name.length == 0
-    ) {
-      setIsDisabled(true);
-    } else {
-      setIsDisabled(false);
-    }
+    const isValid =
+      form.email.trim() !== "" &&
+      form.password.trim() !== "" &&
+      form.confirmPassword.trim() !== "";
+    setIsDisabled(!isValid);
   }, [form]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      setLoading(true);
-      if (form.email.length == 0 || form.password.length == 0) {
-        console.error(
-          "Missing required fields, please enter email and password"
-        );
-      }
-      const response = await axios.post("/api/auth/signup", {
-        email: form.email,
-        name: form.name,
-        password: form.password,
-      });
+    setLoading(true);
 
-      router.push("/login");
-    } catch (error) {
-      console.error("error while registering: ", error);
-    } finally {
+    if (form.password !== form.confirmPassword) {
+      toast.error("Passwords do not match.");
       setLoading(false);
+      return;
     }
+
+    // Simulated request
+    setTimeout(() => {
+      toast.success("Account created successfully!");
+      setLoading(false);
+      router.push("/login");
+    }, 1500);
   };
 
-  if (loading) {
-    return <h1 className="text-center text-3xl">Loading...</h1>;
-  }
-
   return (
-    <div className="mt-20">
-      <h1 className="text-5xl text-center">REGISTER</h1>
-      <form
-        className="flex flex-col gap-4 justify-center items-center mt-10"
-        onSubmit={(e) => handleSubmit(e)}
+    <div className="flex justify-center items-center min-h-screen px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="bg-white dark:bg-neutral-900 p-8 rounded-2xl shadow-xl w-full max-w-md"
       >
-        <label htmlFor="name" className="text-xl">
-          Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          className="border px-3 py-2 rounded-xl w-100"
-          placeholder="example@email.com"
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
-        <label htmlFor="email" className="text-xl">
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          className="border px-3 py-2 rounded-xl w-100"
-          placeholder="example@email.com"
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
-        <label htmlFor="password" className="text-xl">
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          className="border px-3 py-2 rounded-xl w-100"
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-        />
-        <button
-          type="submit"
-          className={`bg-white text-black px-4 py-3 rounded-xl ${
-            isDisabled ? `cursor-not-allowed` : `cursor-pointer`
-          }`}
-          disabled={isDisabled}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-3xl font-bold mb-6 text-center"
         >
-          Register
-        </button>
-      </form>
+          Create your account ✨
+        </motion.h1>
 
-      <p className="text-center text-xl mt-10">
-        Already have an account?{" "}
-        <Link href="/login" className="hover:underline">
-          Login
-        </Link>
-      </p>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div>
+            <label
+              htmlFor="username"
+              className="text-sm font-medium block mb-1"
+            >
+              Username
+            </label>
+            <Input
+              id="username"
+              type="text"
+              placeholder="Your username"
+              value={form.username}
+              onChange={(e) => setForm({ ...form, username: e.target.value })}
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="email" className="text-sm font-medium block mb-1">
+              Email
+            </label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="example@email.com"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <Input
+              type={passwordVisible ? "text" : "password"}
+              placeholder="Password"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              className="pr-10"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setPasswordVisible(!passwordVisible)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary"
+            >
+              {passwordVisible ? <Eye size={18} /> : <EyeOff size={18} />}
+            </button>
+          </div>
+
+          <div>
+            <Input
+              type="password"
+              placeholder="Confirm Password"
+              value={form.confirmPassword}
+              onChange={(e) =>
+                setForm({ ...form, confirmPassword: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            whileHover={{ scale: !isDisabled && !loading ? 1.01 : 1 }}
+            type="submit"
+            disabled={isDisabled || loading}
+            className={`w-full py-3 rounded-xl transition font-medium ${
+              isDisabled
+                ? "bg-gray-300 dark:bg-neutral-700 cursor-not-allowed"
+                : "bg-red-600 hover:bg-red-700 text-white"
+            }`}
+          >
+            {loading ? "Creating account..." : "Sign Up"}
+          </motion.button>
+        </form>
+
+        <p className="text-sm text-center mt-6">
+          Already have an account?{" "}
+          <Link
+            href="/login"
+            className="text-red-500 hover:underline font-medium"
+          >
+            Log In
+          </Link>
+        </p>
+      </motion.div>
     </div>
   );
-};
+}
 
-export default Signup;
+export default SignupPage;
