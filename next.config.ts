@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
     // Only run ESLint on specific directories during build
     dirs: ["app", "components", "libs"],
   },
+  transpilePackages: ["framer-motion"],
 };
 
 export default nextConfig;
