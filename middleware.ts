@@ -38,6 +38,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/notes", request.url));
   }
 
+  if (isAuthenticated && isVerified && isAuthPage(pathname)) {
+    return NextResponse.redirect(new URL("/notes", request.url));
+  }
+
   return NextResponse.next();
 }
 
