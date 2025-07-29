@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { LoaderThree } from "@/components/ui/LoaderThree";
 import { X } from "lucide-react";
+import { toast } from "sonner";
 function CreateNote() {
   const [form, setForm] = useState({
     title: "",
@@ -14,17 +15,19 @@ function CreateNote() {
   const router = useRouter();
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
-  const handleSubmit = async () => {
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.post("/api/notes/addNote", {
+      await axios.post("/api/notes/addNote", {
         email: session?.user.email,
         title: form.title,
         content: form.content,
       });
-
+      toast.success("Note created successfully.");
       router.push("/notes");
     } catch (error) {
+      toast.error("Failed to create note. Please try again.");
       console.error("error creating a note: ", error);
     } finally {
       setLoading(false);

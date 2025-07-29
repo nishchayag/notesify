@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -17,11 +18,19 @@ const ForgotPassword = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      const response = await axios.post("/api/auth/forgotPassword", { email });
+      await axios.post("/api/auth/forgotPassword", { email });
+
+      toast.success("Password reset email sent successfully!");
+      if (process.env.NODE_ENV !== "production") {
+        console.log("Password reset email sent successfully.");
+      }
 
       router.push("/resetEmailSent");
     } catch (error) {
-      console.error("Error while requesting password reset:", error);
+      toast.error("Failed to send password reset email. Please try again.");
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Error while requesting password reset:", error);
+      }
     }
   };
   return (

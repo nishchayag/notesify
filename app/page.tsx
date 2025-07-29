@@ -75,7 +75,8 @@ export default function LandingPage() {
             title: "Tag & Search",
             desc: "Quickly find anything with built-in tags and smart filters.",
           },
-        ].map((feature, i) => {
+        ].map((feature) => {
+          // eslint-disable-next-line @typescript-eslint/no-require-imports
           const Icon = require("lucide-react")[feature.icon];
           return (
             <motion.div

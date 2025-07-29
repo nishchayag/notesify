@@ -3,26 +3,35 @@ import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { signOut } from "next-auth/react";
+import { toast } from "sonner";
 function VerifyEmail() {
   const [tokenVal, setTokenVal] = useState("");
   const urlParams = useSearchParams();
   const token = urlParams.get("token");
   useEffect(() => {
     if (!token) {
-      console.error("Please provide token");
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Please provide token");
+      }
       return;
     }
     setTokenVal(token);
   }, [token]);
   const handleClick = async () => {
     try {
-      const response = await axios.post("/api/auth/verifyEmail", {
+      await axios.post("/api/auth/verifyEmail", {
         token: tokenVal,
       });
 
+      toast.success("Email verified successfully! Please login again.");
       signOut({ callbackUrl: "/login" });
     } catch (error) {
-      console.error("error verifying user: ", error);
+      toast.error(
+        "Failed to verify email. Please check your token and try again."
+      );
+      if (process.env.NODE_ENV !== "production") {
+        console.error("error verifying user: ", error);
+      }
     }
   };
   return (

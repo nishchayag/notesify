@@ -49,7 +49,9 @@ export const authOptions: NextAuthOptions = {
             isVerified: userInDB.isVerified,
           };
         } catch (error) {
-          console.error("error logging in: ", error);
+          if (process.env.NODE_ENV !== "production") {
+            console.error("error logging in: ", error);
+          }
           return null;
         }
       },
@@ -89,7 +91,9 @@ export const authOptions: NextAuthOptions = {
         }
         return true;
       } catch (error) {
-        console.log("error signing in from backend: " + error);
+        if (process.env.NODE_ENV !== "production") {
+          console.log("error signing in from backend: " + error);
+        }
         return false;
       }
     },
@@ -100,6 +104,6 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  debug: true,
+  debug: process.env.NODE_ENV === "development",
   secret: process.env.NEXTAUTH_SECRET,
 };

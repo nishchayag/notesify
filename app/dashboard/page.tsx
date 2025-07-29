@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "sonner";
 function Dashboard() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -26,15 +27,21 @@ function Dashboard() {
           "please enter required fields, either name or password whichever you want to change"
         );
       }
-      const response = await axios.post("/api/auth/editusersettings", {
+      await axios.post("/api/auth/editusersettings", {
         email: session!.user.email,
         name,
         password,
       });
 
+      toast.success("User details updated successfully!");
+      if (process.env.NODE_ENV !== "production") {
+        console.log("User details updated successfully.");
+      }
+
       signOut();
       router.push("/login");
     } catch (error) {
+      toast.error("Failed to update user details. Please try again.");
       console.error("error changing details: ", error);
     }
   };

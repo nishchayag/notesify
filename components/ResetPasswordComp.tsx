@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoaderThree } from "./ui/LoaderThree";
+import { toast } from "sonner";
 const ResetPassword = () => {
   const params = useSearchParams();
   const token = params.get("token");
@@ -35,21 +36,33 @@ const ResetPassword = () => {
     try {
       setLoading(true);
       if (password.length === 0 || confirmPassword.length === 0) {
-        console.error("Please provide required fields");
-        alert("Please provide required fields");
+        toast.error("Please provide required fields");
+        if (process.env.NODE_ENV !== "production") {
+          console.error("Please provide required fields");
+        }
+        return;
       }
       if (password !== confirmPassword) {
-        console.error("please ensure password and confirm password are same");
-        alert("please ensure password and confirm password are same");
+        toast.error("Please ensure password and confirm password are the same");
+        if (process.env.NODE_ENV !== "production") {
+          console.error("please ensure password and confirm password are same");
+        }
+        return;
       }
-      const response = await axios.post("/api/auth/resetPassword", {
+      await axios.post("/api/auth/resetPassword", {
         token: tokenVal,
         password,
       });
 
+      toast.success(
+        "Password reset successfully! Please login with your new password."
+      );
       router.push("/login");
     } catch (error) {
-      console.error("Error resetting password: ", error);
+      toast.error("Failed to reset password. Please try again.");
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Error resetting password: ", error);
+      }
     } finally {
       setLoading(false);
     }

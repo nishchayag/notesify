@@ -19,7 +19,7 @@ export const sendEmail = async ({
     }
     const token = await bcrypt.hash(currUser._id.toString(), 10);
     if (mailType === "VERIFY") {
-      const userToVerify = await userModel.findOneAndUpdate(
+      await userModel.findOneAndUpdate(
         { email },
         {
           $set: {
@@ -29,7 +29,7 @@ export const sendEmail = async ({
         }
       );
     } else if (mailType === "RESET") {
-      const userToChange = await userModel.findOneAndUpdate(
+      await userModel.findOneAndUpdate(
         { email },
         {
           $set: {
@@ -138,8 +138,12 @@ export const sendEmail = async ({
 
     const resend = new Resend(process.env.RESEND_API_KEY);
     const response = await resend.emails.send(mailOptions);
-    console.log("Email sent successfully: ", response);
+    if (process.env.NODE_ENV !== "production") {
+      console.log("Email sent successfully: ", response);
+    }
   } catch (error) {
-    console.error("error sending email: ", error);
+    if (process.env.NODE_ENV !== "production") {
+      console.error("error sending email: ", error);
+    }
   }
 };

@@ -25,7 +25,9 @@ export async function POST(request: NextRequest) {
       provider: "credentials",
     });
 
-    console.log("User registered successfully: ", newUser);
+    if (process.env.NODE_ENV !== "production") {
+      console.log("User registered successfully: ", newUser);
+    }
 
     // await Note.create({
     //   email,
@@ -34,7 +36,9 @@ export async function POST(request: NextRequest) {
     // });
 
     sendEmail({ email, mailType: "VERIFY" });
-    console.log("verification email sent");
+    if (process.env.NODE_ENV !== "production") {
+      console.log("verification email sent");
+    }
     return NextResponse.json({
       message: "User registered successfully, verification email sent.",
     });

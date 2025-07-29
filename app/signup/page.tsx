@@ -12,7 +12,7 @@ function SignupPage() {
   const router = useRouter();
 
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  // Note: confirmPasswordVisible removed as it was unused
   const [form, setForm] = useState({
     username: "",
     email: "",

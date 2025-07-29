@@ -29,13 +29,16 @@ const NoteCard = ({ noteItem }: { noteItem: NoteStruc }) => {
   const handleDelete = async () => {
     try {
       setLoading(true);
-      const response = await axios.post("/api/notes/deleteNote", {
+      await axios.post("/api/notes/deleteNote", {
         noteId: noteItem._id,
         email: session?.user.email,
       });
       toast.success("Note deleted successfully.");
+      window.location.reload();
     } catch (error) {
-      console.error("error deleting note: ", error);
+      if (process.env.NODE_ENV !== "production") {
+        console.error("error deleting note: ", error);
+      }
       toast.error("Could not delete note. Please try again.");
     } finally {
       setLoading(false);
@@ -85,9 +88,7 @@ const NoteCard = ({ noteItem }: { noteItem: NoteStruc }) => {
       {/* Bottom Row */}
       <div className="relative z-10 mt-4 flex justify-between items-center text-xs text-neutral-500 dark:text-neutral-400">
         <button
-          onClick={(e) => {
-            handleDelete(e, noteItem._id);
-          }}
+          onClick={handleDelete}
           className="flex items-center gap-1 text-red-400 hover:text-red-600 transition"
         >
           <Trash2 className="w-4 h-4" />

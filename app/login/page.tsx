@@ -10,7 +10,7 @@ import { Eye, EyeOff } from "lucide-react";
 function LoginPage() {
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [password, setPassword] = useState("");
+  // Note: removed unused password and setPassword state
   const [form, setForm] = useState({
     email: "",
     password: "",

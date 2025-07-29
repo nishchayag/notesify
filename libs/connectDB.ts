@@ -3,8 +3,10 @@ const MONGO_URI = process.env.MONGO_URI as string;
 if (!MONGO_URI) {
   throw new Error("Please provide mongodb connection string in env file");
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let cached = (global as any).mongoose;
 if (!cached) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   cached = (global as any).mongoose = { conn: null, promise: null };
 }
 
@@ -14,7 +16,9 @@ export default async function connectDB() {
     try {
       cached.promise = mongoose.connect(MONGO_URI, { bufferCommands: false });
     } catch (error) {
-      console.error("Error connecting to DB: ", error);
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Error connecting to DB: ", error);
+      }
     }
   }
   cached.conn = await cached.promise;

@@ -5,6 +5,7 @@ import React from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { LoaderThree } from "./ui/LoaderThree";
+import { toast } from "sonner";
 const EditNote = () => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -30,45 +31,55 @@ const EditNote = () => {
 
       const { title, content, isCompleted } = response.data;
 
-      setForm({
-        ...form,
+      setForm((prevForm) => ({
+        ...prevForm,
         updatedTitle: title,
         updatedContent: content,
         updatedIsCompleted: isCompleted,
-      });
+      }));
     };
     fetchNoteUsingId();
   }, [noteid]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.post("/api/notes/updateNote", {
+      await axios.post("/api/notes/updateNote", {
         noteId: params.get("noteid"),
         title: form.updatedTitle,
         content: form.updatedContent,
         isCompleted: form.updatedIsCompleted,
       });
 
+      toast.success("Note updated successfully!");
       router.push("/notes");
     } catch (error) {
-      console.error("could not edit note: ", error);
+      toast.error("Failed to update note. Please try again.");
+      if (process.env.NODE_ENV !== "production") {
+        console.error("could not edit note: ", error);
+      }
     } finally {
       setLoading(false);
     }
   };
-
   const handleDelete = async () => {
     try {
       setLoading(true);
-      const response = await axios.post("/api/notes/deleteNote", {
+      await axios.post("/api/notes/deleteNote", {
         noteId: params.get("noteid"),
         email: session?.user.email,
       });
 
+      toast.success("Note deleted successfully!");
       router.push("/notes");
     } catch (error) {
-      console.error("error deleting note: ", error);
+      toast.error("Failed to delete note. Please try again.");
+      if (process.env.NODE_ENV !== "production") {
+        console.error("error deleting note: ", error);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import NoteCard from "@/components/NoteCard";
 import { useRouter } from "next/navigation";
 import { LoaderThree } from "@/components/ui/LoaderThree";
+import { toast } from "sonner";
 function NotesPage() {
   const [notesArray, setNotesArray] = useState<Array<NoteStruc>>([]);
   const [filteredNotesArray, setFilteredNotesArray] = useState<
@@ -30,6 +31,7 @@ function NotesPage() {
             setFilteredNotesArray(response.data);
           }
         } catch (error) {
+          toast.error("Failed to fetch notes. Please try refreshing the page.");
           console.error("Couldnt fetch notes: ", error);
         } finally {
           setloading(false);
