@@ -57,45 +57,55 @@ const NoteCard = ({ noteItem }: { noteItem: NoteStruc }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className={`relative rounded-2xl bg-white dark:bg-neutral-900 p-6 shadow-xl border border-neutral-200 dark:border-neutral-800 transition group hover:shadow-2xl `}
+      className="bg-card border border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 group"
     >
-      {/* Clickable Overlay */}
-      <Link
-        href={`/editnote?noteid=${noteItem._id}`}
-        className="absolute inset-0 z-0"
-      />
+      {/* Header */}
+      <div className="flex justify-between items-start mb-4">
+        <div className="flex-1 min-w-0">
+          <Link href={`/editnote?noteid=${noteItem._id}`}>
+            <h2
+              className={`text-lg font-semibold text-card-foreground group-hover:text-primary transition-colors cursor-pointer ${noteItem.isCompleted ? "line-through opacity-60" : ""}`}
+            >
+              {noteItem.title}
+            </h2>
+          </Link>
+        </div>
 
-      {/* Top Row */}
-      <div className="relative z-10 flex justify-between items-start mb-3">
-        <h2
-          className={`text-lg font-semibold text-neutral-900 dark:text-white group-hover:text-red-500 transition-colors ${noteItem.isCompleted ? "line-through" : ""} `}
-        >
-          {noteItem.title}
-        </h2>
+        <div className="flex items-center gap-2 ml-4">
+          {noteItem.isCompleted && (
+            <span className="text-xs bg-green-600 text-white px-2 py-1 rounded-full font-medium">
+              ✅ Done
+            </span>
+          )}
 
-        {noteItem.isCompleted && (
-          <span className="text-xs bg-green-600 text-white px-2 py-1 rounded-full ">
-            ✅ Completed
-          </span>
-        )}
+          <button
+            onClick={handleDelete}
+            disabled={loading}
+            className="text-muted-foreground hover:text-destructive transition-colors p-1 rounded-md hover:bg-destructive/10"
+            title="Delete note"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* Content */}
-      <p
-        className={`relative z-10 text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed ${noteItem.isCompleted ? "line-through" : ""}`}
-      >
-        {preview}
-      </p>
-
-      {/* Bottom Row */}
-      <div className="relative z-10 mt-4 flex justify-between items-center text-xs text-neutral-500 dark:text-neutral-400">
-        <button
-          onClick={handleDelete}
-          className="flex items-center gap-1 text-red-400 hover:text-red-600 transition"
+      <Link href={`/editnote?noteid=${noteItem._id}`}>
+        <p
+          className={`text-sm text-muted-foreground leading-relaxed mb-4 cursor-pointer hover:text-foreground transition-colors ${noteItem.isCompleted ? "line-through opacity-60" : ""}`}
         >
-          <Trash2 className="w-4 h-4" />
-          Delete
-        </button>
+          {preview}
+        </p>
+      </Link>
+
+      {/* Footer */}
+      <div className="flex justify-between items-center text-xs text-muted-foreground">
+        <Link
+          href={`/editnote?noteid=${noteItem._id}`}
+          className="text-primary hover:text-primary/80 font-medium transition-colors"
+        >
+          Edit note →
+        </Link>
 
         <span>
           Updated{" "}

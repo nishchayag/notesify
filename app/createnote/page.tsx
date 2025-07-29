@@ -38,56 +38,80 @@ function CreateNote() {
     return <LoaderThree />;
   }
   return (
-    <div className="flex flex-col justify-center items-center gap-10 mt-20 px-4">
-      <Link
-        href="/notes"
-        className="text-red-500 hover:text-black hover:bg-red-200 p-2 rounded-lg transition-colors duration-100"
-      >
-        <X className="p-1" />
-      </Link>
-      <h1 className="text-4xl sm:text-5xl font-bold text-center text-neutral-800 dark:text-white">
-        Create New Note
-      </h1>
-      <form
-        className="flex flex-col gap-6 justify-center items-center w-full max-w-xl"
-        onSubmit={handleSubmit}
-      >
-        <div className="w-full">
-          <label
-            htmlFor="title"
-            className="text-lg font-medium text-neutral-700 dark:text-neutral-200"
+    <div className="min-h-screen bg-background">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <Link
+            href="/notes"
+            className="text-muted-foreground hover:text-foreground p-2 hover:bg-accent rounded-lg transition-all duration-200 flex items-center gap-2"
           >
-            Title
-          </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            className="mt-2 w-full px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white placeholder:text-neutral-500"
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-          />
+            <X className="w-4 h-4" />
+            <span className="hidden sm:inline">Back to Notes</span>
+          </Link>
+          <h1 className="text-3xl font-bold text-foreground">
+            Create New Note
+          </h1>
+          <div className="w-16"></div> {/* Spacer for center alignment */}
         </div>
-        <div className="w-full">
-          <label
-            htmlFor="content"
-            className="text-lg font-medium text-neutral-700 dark:text-neutral-200"
-          >
-            Content
-          </label>
-          <textarea
-            id="content"
-            name="content"
-            className="mt-2 w-full h-80 px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white placeholder:text-neutral-500 resize-none"
-            onChange={(e) => setForm({ ...form, content: e.target.value })}
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-3 rounded-xl transition"
-        >
-          Submit
-        </button>
-      </form>
+
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div>
+            <label
+              htmlFor="title"
+              className="text-sm font-medium text-foreground block mb-2"
+            >
+              Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              placeholder="Give your note a title..."
+              className="w-full px-4 py-3 rounded-xl border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+              onChange={(e) => setForm({ ...form, title: e.target.value })}
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="content"
+              className="text-sm font-medium text-foreground block mb-2"
+            >
+              Content
+            </label>
+            <textarea
+              id="content"
+              name="content"
+              placeholder="Start writing your note..."
+              className="w-full h-80 px-4 py-3 rounded-xl border border-input bg-background text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+              onChange={(e) => setForm({ ...form, content: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="flex justify-end gap-3">
+            <Link
+              href="/notes"
+              className="px-6 py-3 rounded-xl border border-input bg-background text-foreground hover:bg-accent transition-all duration-200 font-medium"
+            >
+              Cancel
+            </Link>
+            <button
+              type="submit"
+              disabled={loading}
+              className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+                loading
+                  ? "bg-muted text-muted-foreground cursor-not-allowed"
+                  : "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
+              }`}
+            >
+              {loading ? "Creating..." : "Create Note"}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

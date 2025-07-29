@@ -50,18 +50,18 @@ function SignupPage() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen px-4">
+    <div className="min-h-screen flex justify-center items-center px-4 bg-background">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="bg-white dark:bg-neutral-900 p-8 rounded-2xl shadow-xl w-full max-w-md"
+        className="bg-card border border-border p-8 rounded-2xl shadow-lg w-full max-w-md"
       >
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-3xl font-bold mb-6 text-center"
+          className="text-3xl font-bold mb-6 text-center text-card-foreground"
         >
           Create your account ✨
         </motion.h1>
@@ -133,21 +133,21 @@ function SignupPage() {
             whileHover={{ scale: !isDisabled && !loading ? 1.01 : 1 }}
             type="submit"
             disabled={isDisabled || loading}
-            className={`w-full py-3 rounded-xl transition font-medium ${
+            className={`w-full py-3 rounded-xl transition-all duration-200 font-medium mt-2 ${
               isDisabled
-                ? "bg-gray-300 dark:bg-neutral-700 cursor-not-allowed"
-                : "bg-red-600 hover:bg-red-700 text-white"
+                ? "bg-muted text-muted-foreground cursor-not-allowed"
+                : "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
             }`}
           >
             {loading ? "Creating account..." : "Sign Up"}
           </motion.button>
         </form>
 
-        <p className="text-sm text-center mt-6">
+        <p className="text-sm text-center mt-6 text-muted-foreground">
           Already have an account?{" "}
           <Link
             href="/login"
-            className="text-red-500 hover:underline font-medium"
+            className="text-primary hover:text-primary/80 font-medium transition-colors"
           >
             Log In
           </Link>

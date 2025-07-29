@@ -88,90 +88,128 @@ const EditNote = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center gap-10 mt-20 px-4">
-      <h1 className="text-4xl sm:text-5xl font-bold text-center text-neutral-800 dark:text-white">
-        Edit Note
-      </h1>
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-6 justify-center items-center w-full max-w-xl"
-      >
-        <div className="w-full">
-          <label
-            htmlFor="title"
-            className="text-lg font-medium text-neutral-700 dark:text-neutral-200"
-          >
-            Title
-          </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            className="mt-2 w-full px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white"
-            value={form.updatedTitle}
-            onChange={(e) => setForm({ ...form, updatedTitle: e.target.value })}
-          />
-        </div>
-        <div className="w-full">
-          <label
-            htmlFor="content"
-            className="text-lg font-medium text-neutral-700 dark:text-neutral-200"
-          >
-            Content
-          </label>
-          <textarea
-            id="content"
-            name="content"
-            className="mt-2 w-full h-80 px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white resize-none"
-            value={form.updatedContent}
-            onChange={(e) =>
-              setForm({ ...form, updatedContent: e.target.value })
-            }
-          />
-        </div>
-        <div className="flex items-center gap-3 w-full">
-          <input
-            type="checkbox"
-            id="iscompleted"
-            className="scale-125 accent-red-500"
-            checked={form.updatedIsCompleted}
-            onChange={() =>
-              setForm({
-                ...form,
-                updatedIsCompleted: outerIsCompleted ? false : true,
-              })
-            }
-          />
-          <label
-            htmlFor="iscompleted"
-            className="text-neutral-700 dark:text-neutral-200 text-sm sm:text-base"
-          >
-            Mark as Completed
-          </label>
-        </div>
-        <div className="flex flex-wrap justify-center gap-4 mt-4">
+    <div className="min-h-screen bg-background">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
           <button
             onClick={() => router.push("/notes")}
-            className="bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-black dark:text-white px-6 py-3 rounded-xl transition"
-            type="button"
+            className="text-muted-foreground hover:text-foreground p-2 hover:bg-accent rounded-lg transition-all duration-200 flex items-center gap-2"
           >
-            Cancel
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            <span className="hidden sm:inline">Back to Notes</span>
           </button>
-          <button
-            type="submit"
-            className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl transition"
-          >
-            Submit
-          </button>
-          <button
-            onClick={handleDelete}
-            type="button"
-            className="bg-neutral-500 hover:bg-neutral-600 text-white px-6 py-3 rounded-xl transition"
-          >
-            Delete Note
-          </button>
+          <h1 className="text-3xl font-bold text-foreground">Edit Note</h1>
+          <div className="w-16"></div> {/* Spacer for center alignment */}
         </div>
-      </form>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label
+              htmlFor="title"
+              className="text-sm font-medium text-foreground block mb-2"
+            >
+              Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              className="w-full px-4 py-3 rounded-xl border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+              value={form.updatedTitle}
+              onChange={(e) =>
+                setForm({ ...form, updatedTitle: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="content"
+              className="text-sm font-medium text-foreground block mb-2"
+            >
+              Content
+            </label>
+            <textarea
+              id="content"
+              name="content"
+              className="w-full h-80 px-4 py-3 rounded-xl border border-input bg-background text-foreground resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+              value={form.updatedContent}
+              onChange={(e) =>
+                setForm({ ...form, updatedContent: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl">
+            <input
+              type="checkbox"
+              id="iscompleted"
+              className="w-4 h-4 text-primary bg-background border-input rounded focus:ring-ring focus:ring-2"
+              checked={form.updatedIsCompleted}
+              onChange={() =>
+                setForm({
+                  ...form,
+                  updatedIsCompleted: !outerIsCompleted,
+                })
+              }
+            />
+            <label
+              htmlFor="iscompleted"
+              className="text-foreground font-medium"
+            >
+              Mark as Completed
+            </label>
+          </div>
+
+          <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
+            <button
+              onClick={() => router.push("/notes")}
+              className="px-6 py-3 rounded-xl border border-input bg-background text-foreground hover:bg-accent transition-all duration-200 font-medium"
+              type="button"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDelete}
+              type="button"
+              disabled={loading}
+              className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+                loading
+                  ? "bg-muted text-muted-foreground cursor-not-allowed"
+                  : "bg-destructive text-white hover:bg-destructive/90 shadow-sm"
+              }`}
+            >
+              {loading ? "Deleting..." : "Delete Note"}
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+                loading
+                  ? "bg-muted text-muted-foreground cursor-not-allowed"
+                  : "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
+              }`}
+            >
+              {loading ? "Updating..." : "Update Note"}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

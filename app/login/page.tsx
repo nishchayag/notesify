@@ -55,18 +55,18 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen px-4">
+    <div className="min-h-screen flex justify-center items-center px-4 bg-background">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="bg-white dark:bg-neutral-900 p-8 rounded-2xl shadow-xl w-full max-w-md"
+        className="bg-card border border-border p-8 rounded-2xl shadow-lg w-full max-w-md"
       >
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-3xl font-bold mb-6 text-center"
+          className="text-3xl font-bold mb-6 text-center text-card-foreground"
         >
           Welcome back 👋
         </motion.h1>
@@ -75,7 +75,7 @@ function LoginPage() {
           <div>
             <label
               htmlFor="identifier"
-              className="text-sm font-medium block mb-1"
+              className="text-sm font-medium block mb-2 text-foreground"
             >
               Email
             </label>
@@ -90,7 +90,14 @@ function LoginPage() {
           </div>
 
           <div className="relative">
+            <label
+              htmlFor="password"
+              className="text-sm font-medium block mb-2 text-foreground"
+            >
+              Password
+            </label>
             <Input
+              id="password"
               type={passwordVisible ? "text" : "password"}
               placeholder="Password"
               value={form.password}
@@ -101,7 +108,7 @@ function LoginPage() {
             <button
               type="button"
               onClick={() => setPasswordVisible(!passwordVisible)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary"
+              className="absolute right-3 top-9 text-muted-foreground hover:text-primary transition-colors"
             >
               {passwordVisible ? <Eye size={18} /> : <EyeOff size={18} />}
             </button>
@@ -112,25 +119,36 @@ function LoginPage() {
             whileHover={{ scale: !isDisabled && !loading ? 1.01 : 1 }}
             type="submit"
             disabled={isDisabled || loading}
-            className={`w-full py-3 rounded-xl transition font-medium ${
+            className={`w-full py-3 rounded-xl transition-all duration-200 font-medium mt-2 ${
               isDisabled
-                ? "bg-gray-300 dark:bg-neutral-700 cursor-not-allowed"
-                : "bg-red-600 hover:bg-red-700 text-white"
+                ? "bg-muted text-muted-foreground cursor-not-allowed"
+                : "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
             }`}
           >
             {loading ? "Logging in..." : "Login"}
           </motion.button>
         </form>
 
-        <p className="text-sm text-center mt-6">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/signup"
-            className="text-red-500 hover:underline font-medium"
-          >
-            Sign Up
-          </Link>
-        </p>
+        <div className="mt-6 space-y-3">
+          <p className="text-sm text-center text-muted-foreground">
+            <Link
+              href="/forgotPassword"
+              className="text-primary hover:text-primary/80 font-medium transition-colors"
+            >
+              Forgot your password?
+            </Link>
+          </p>
+
+          <p className="text-sm text-center text-muted-foreground">
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/signup"
+              className="text-primary hover:text-primary/80 font-medium transition-colors"
+            >
+              Sign Up
+            </Link>
+          </p>
+        </div>
       </motion.div>
     </div>
   );

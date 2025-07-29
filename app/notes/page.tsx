@@ -58,53 +58,114 @@ function NotesPage() {
   if (status === "authenticated" && Array.isArray(filteredNotesArray)) {
     if (filteredNotesArray.length === 0) {
       return (
-        <div className="flex flex-col items-center justify-center gap-8 py-10 px-4">
-          <input
-            type="text"
-            placeholder="Search note"
-            className="w-full max-w-md px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white placeholder:text-neutral-500"
-            onChange={(e) => setSearchFilter(e.target.value)}
-            value={searchFilter}
-          />
-          <button
-            onClick={() => {
-              router.push("/createnote");
-            }}
-            className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl font-semibold transition"
-          >
-            Create Note
-          </button>
-          <h1 className="text-center text-xl text-neutral-700 dark:text-neutral-300 font-medium">
-            No notes are present, please create a note, or change search filter
-          </h1>
+        <div className="min-h-screen bg-background">
+          <div className="max-w-4xl mx-auto px-4 py-12">
+            {/* Search Bar */}
+            <div className="mb-8">
+              <input
+                type="text"
+                placeholder="Search your notes..."
+                className="w-full px-4 py-3 rounded-xl border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+                onChange={(e) => setSearchFilter(e.target.value)}
+                value={searchFilter}
+              />
+            </div>
+
+            {/* Empty State */}
+            <div className="text-center space-y-6">
+              <div className="w-24 h-24 mx-auto bg-muted rounded-full flex items-center justify-center">
+                <svg
+                  className="w-10 h-10 text-muted-foreground"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+              </div>
+
+              <div>
+                <h2 className="text-2xl font-semibold text-foreground mb-2">
+                  {searchFilter ? "No notes found" : "No notes yet"}
+                </h2>
+                <p className="text-muted-foreground mb-6">
+                  {searchFilter
+                    ? "Try adjusting your search terms or create a new note."
+                    : "Start capturing your thoughts and ideas with your first note."}
+                </p>
+              </div>
+
+              <button
+                onClick={() => router.push("/createnote")}
+                className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-medium hover:bg-primary/90 transition-all duration-200 shadow-sm"
+              >
+                ✨ Create Your First Note
+              </button>
+            </div>
+          </div>
         </div>
       );
     } else {
       return (
-        <div className="flex flex-col items-center justify-center gap-10 py-10 px-4">
-          <div className="flex flex-col sm:flex-row gap-4 w-full max-w-4xl">
-            <input
-              type="text"
-              placeholder="Search note"
-              className="flex-1 px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white placeholder:text-neutral-500"
-              onChange={(e) => setSearchFilter(e.target.value)}
-              value={searchFilter}
-            />
-            <button
-              onClick={() => {
-                router.push("/createnote");
-              }}
-              className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl font-semibold transition"
-            >
-              Create Note
-            </button>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full px-2 sm:px-4 md:px-8 lg:px-20">
-            {filteredNotesArray.map((note, index) => (
-              <div key={index}>
-                <NoteCard noteItem={note} />
+        <div className="min-h-screen bg-background">
+          <div className="max-w-7xl mx-auto px-4 py-8">
+            {/* Header */}
+            <div className="mb-8">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                <div>
+                  <h1 className="text-3xl font-bold text-foreground">
+                    Your Notes
+                  </h1>
+                  <p className="text-muted-foreground mt-1">
+                    {notesArray.length}{" "}
+                    {notesArray.length === 1 ? "note" : "notes"} total
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => router.push("/createnote")}
+                  className="bg-primary text-primary-foreground px-4 py-2 rounded-xl font-medium hover:bg-primary/90 transition-all duration-200 shadow-sm flex items-center gap-2"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  New Note
+                </button>
               </div>
-            ))}
+
+              {/* Search Bar */}
+              <input
+                type="text"
+                placeholder="Search your notes..."
+                className="w-full max-w-md px-4 py-3 rounded-xl border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+                onChange={(e) => setSearchFilter(e.target.value)}
+                value={searchFilter}
+              />
+            </div>
+
+            {/* Notes Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredNotesArray.map((note, index) => (
+                <div key={index}>
+                  <NoteCard noteItem={note} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       );

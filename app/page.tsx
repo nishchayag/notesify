@@ -42,8 +42,12 @@ export default function LandingPage() {
           words.
         </p>
 
-        <div className="mt-8 flex justify-center gap-4">
-          <Button asChild size="lg">
+        <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+          <Button
+            asChild
+            size="lg"
+            className="bg-primary text-primary-foreground hover:bg-primary/90"
+          >
             <Link href="/signup">Get Started</Link>
           </Button>
           <Button asChild size="lg" variant="outline">

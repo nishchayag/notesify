@@ -47,54 +47,85 @@ function Dashboard() {
   };
 
   return (
-    <div className="mt-20 flex flex-col justify-center items-center px-4 gap-10">
-      <h1 className="text-4xl sm:text-5xl font-bold text-center text-neutral-800 dark:text-white">
-        User Details for {session?.user.email}
-      </h1>
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-6 justify-center items-center w-full max-w-xl"
-      >
-        <div className="w-full">
-          <label
-            htmlFor="name"
-            className="text-lg font-medium text-neutral-700 dark:text-neutral-200"
-          >
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            className="mt-2 w-full px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white"
-            onChange={(e) => setName(e.target.value)}
-          />
+    <div className="min-h-screen bg-background">
+      <div className="max-w-2xl mx-auto px-4 py-12">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Account Settings
+          </h1>
+          <p className="text-muted-foreground">
+            Update your account details for {session?.user.email}
+          </p>
         </div>
-        <div className="w-full">
-          <label
-            htmlFor="password"
-            className="text-lg font-medium text-neutral-700 dark:text-neutral-200"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            className="mt-2 w-full px-4 py-3 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-black dark:text-white"
-            onChange={(e) => setPassword(e.target.value)}
-          />
+
+        <div className="bg-card border border-border rounded-2xl p-8 shadow-sm">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label
+                htmlFor="name"
+                className="text-sm font-medium text-foreground block mb-2"
+              >
+                Display Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter your display name"
+                className="w-full px-4 py-3 rounded-xl border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="password"
+                className="text-sm font-medium text-foreground block mb-2"
+              >
+                New Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter new password (optional)"
+                className="w-full px-4 py-3 rounded-xl border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
+            <div className="bg-muted/50 p-4 rounded-xl">
+              <p className="text-sm text-muted-foreground mb-2">
+                💡 <strong>Note:</strong> You can update either your name,
+                password, or both. Changing your password will require you to
+                log in again.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 pt-4">
+              <button
+                type="button"
+                onClick={() => router.push("/notes")}
+                className="flex-1 px-6 py-3 rounded-xl border border-input bg-background text-foreground hover:bg-accent transition-all duration-200 font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isDisabled}
+                className={`flex-1 px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
+                  isDisabled
+                    ? "bg-muted text-muted-foreground cursor-not-allowed"
+                    : "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
+                }`}
+              >
+                Update Settings
+              </button>
+            </div>
+          </form>
         </div>
-        <button
-          type="submit"
-          className={`w-full bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl transition ${
-            isDisabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
-          }`}
-          disabled={isDisabled}
-        >
-          Submit
-        </button>
-      </form>
+      </div>
     </div>
   );
 }
