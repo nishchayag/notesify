@@ -1,13 +1,20 @@
 import mongoose from "mongoose";
 
 // Environment validation
-const requiredEnvVars = ['MONGO_URI', 'NEXTAUTH_SECRET', 'RESEND_API_KEY', 'DOMAIN'];
-const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
+const requiredEnvVars = [
+  "MONGO_URI",
+  "NEXTAUTH_SECRET",
+  "RESEND_API_KEY",
+  "DOMAIN",
+];
+const missingEnvVars = requiredEnvVars.filter((envVar) => !process.env[envVar]);
 
 if (missingEnvVars.length > 0) {
-  console.error('❌ Missing required environment variables:', missingEnvVars);
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error(`Missing environment variables: ${missingEnvVars.join(', ')}`);
+  console.error("❌ Missing required environment variables:", missingEnvVars);
+  if (process.env.NODE_ENV === "production") {
+    throw new Error(
+      `Missing environment variables: ${missingEnvVars.join(", ")}`
+    );
   }
 }
 
