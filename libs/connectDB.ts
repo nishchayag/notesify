@@ -12,15 +12,37 @@ if (!cached) {
 
 export default async function connectDB() {
   if (cached.conn) return cached.conn;
+
   if (!cached.promise) {
     try {
-      cached.promise = mongoose.connect(MONGO_URI, { bufferCommands: false });
+      cached.promise = mongoose.connect(MONGO_URI, {
+        bufferCommands: false,
+        maxPoolSize: 10,
+        serverSelectionTimeoutMS: 5000,
+        socketTimeoutMS: 45000,
+      });
+
+      if (process.env.NODE_ENV !== "production") {
+        console.log("Attempting to connect to MongoDB...");
+      }
     } catch (error) {
       if (process.env.NODE_ENV !== "production") {
         console.error("Error connecting to DB: ", error);
       }
+      throw error;
     }
   }
-  cached.conn = await cached.promise;
-  return cached.conn;
+
+  try {
+    cached.conn = await cached.promise;
+    if (process.env.NODE_ENV !== "production") {
+      console.log("MongoDB connected successfully");
+    }
+    return cached.conn;
+  } catch (error) {
+    if (process.env.NODE_ENV !== "production") {
+      console.error("MongoDB connection failed: ", error);
+    }
+    throw error;
+  }
 }

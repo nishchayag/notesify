@@ -7,12 +7,14 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 function SignupPage() {
   const router = useRouter();
 
   const [passwordVisible, setPasswordVisible] = useState(false);
-  // Note: confirmPasswordVisible removed as it was unused
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -41,12 +43,29 @@ function SignupPage() {
       return;
     }
 
-    // Simulated request
-    setTimeout(() => {
-      toast.success("Account created successfully!");
+    try {
+      const response = await axios.post("/api/auth/signup", {
+        email: form.email,
+        password: form.password,
+        name: form.username,
+      });
+
+      if (response.data.error) {
+        toast.error(response.data.error);
+      } else {
+        toast.success(
+          "Account created successfully! Check your email for verification."
+        );
+        router.push("/askToVerify");
+      }
+    } catch (error) {
+      toast.error(
+        "An error occurred while creating your account. Please try again."
+      );
+      console.error("Signup error:", error);
+    } finally {
       setLoading(false);
-      router.push("/login");
-    }, 1500);
+    }
   };
 
   return (
@@ -118,14 +137,26 @@ function SignupPage() {
 
           <div>
             <Input
-              type="password"
+              type={confirmPasswordVisible ? "text" : "password"}
               placeholder="Confirm Password"
               value={form.confirmPassword}
               onChange={(e) =>
                 setForm({ ...form, confirmPassword: e.target.value })
               }
               required
+              className="pr-10"
             />
+            <button
+              type="button"
+              onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary"
+            >
+              {confirmPasswordVisible ? (
+                <Eye size={18} />
+              ) : (
+                <EyeOff size={18} />
+              )}
+            </button>
           </div>
 
           <motion.button

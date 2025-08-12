@@ -11,9 +11,10 @@ export async function POST(request: NextRequest) {
 
     const currUser = await userModel.findOne({ email });
     if (currUser) {
-      return NextResponse.json({
-        error: "Email already in use for an existing account",
-      });
+      return NextResponse.json(
+        { error: "Email already in use for an existing account" },
+        { status: 400 }
+      );
     }
 
     const hashedPassword = await bcryptjs.hash(password, 10);
@@ -26,25 +27,26 @@ export async function POST(request: NextRequest) {
     });
 
     if (process.env.NODE_ENV !== "production") {
-      console.log("User registered successfully: ", newUser);
+      console.log("User registered successfully: ", newUser._id);
     }
 
-    // await Note.create({
-    //   email,
-    //   title: "Welcome To Notesify",
-    //   content: "This is your welcome note, edit or delete it anytime!",
-    // });
+    await sendEmail({ email, mailType: "VERIFY" });
 
-    sendEmail({ email, mailType: "VERIFY" });
     if (process.env.NODE_ENV !== "production") {
-      console.log("verification email sent");
+      console.log("Verification email sent to:", email);
     }
+
     return NextResponse.json({
       message: "User registered successfully, verification email sent.",
+      success: true,
     });
   } catch (error) {
-    return NextResponse.json({
-      error: "There was an error while registering: " + error,
-    });
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Signup error:", error);
+    }
+    return NextResponse.json(
+      { error: "There was an error while registering. Please try again." },
+      { status: 500 }
+    );
   }
 }

@@ -13,11 +13,13 @@ export const sendEmail = async ({
   try {
     const currUser = await userModel.findOne({ email });
     if (!currUser) {
-      console.error(
+      throw new Error(
         "Cannot send email since email does not belong to an account!"
       );
     }
+
     const token = await bcrypt.hash(currUser._id.toString(), 10);
+
     if (mailType === "VERIFY") {
       await userModel.findOneAndUpdate(
         { email },
