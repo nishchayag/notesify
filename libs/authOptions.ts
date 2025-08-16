@@ -62,8 +62,16 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        const userInDB = await userModel.findOne({ email: user.email });
-        token.isVerified = userInDB?.isVerified || false;
+        try {
+          await connectDB();
+          const userInDB = await userModel.findOne({ email: user.email });
+          token.isVerified = userInDB?.isVerified || false;
+        } catch (error) {
+          if (process.env.NODE_ENV !== "production") {
+            console.error("Error in JWT callback:", error);
+          }
+          token.isVerified = false;
+        }
       }
 
       return token;

@@ -10,9 +10,7 @@ import StructuredData, {
   webApplicationStructuredData,
   webSiteStructuredData,
 } from "@/components/StructuredData";
-import Analytics from "@/components/Analytics";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -106,19 +104,23 @@ export default function RootLayout({
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#3b82f6" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Notesify" />
-        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <link rel="apple-touch-icon" href="/next.svg" />
         <meta name="msapplication-TileColor" content="#3b82f6" />
-        <meta name="msapplication-config" content="/browserconfig.xml" />
       </head>
       <SessionWrapper>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <ErrorBoundary>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <ThemeProvider 
+              attribute="class" 
+              defaultTheme="system" 
+              enableSystem
+              disableTransitionOnChange
+            >
               <Navbar />
               <main className="min-h-screen">{children}</main>
               <Footer />
@@ -130,19 +132,6 @@ export default function RootLayout({
                 data={webApplicationStructuredData}
               />
               <StructuredData type="WebSite" data={webSiteStructuredData} />
-
-              {/* Analytics */}
-              <Analytics googleAnalyticsId={process.env.NEXT_PUBLIC_GA_ID} />
-
-              {/* Error Tracking Initialization */}
-              <Script id="error-tracker-init" strategy="afterInteractive">
-                {`
-                  import('/lib/error-tracker.js').then(module => {
-                    const ErrorTracker = module.default;
-                    ErrorTracker.getInstance().init();
-                  }).catch(console.error);
-                `}
-              </Script>
             </ThemeProvider>
           </ErrorBoundary>
         </body>

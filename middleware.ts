@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
-import { addSecurityHeaders, applyRateLimit } from "./lib/security";
 
 const authPages = [
   "/",
@@ -19,22 +18,13 @@ const isAuthPage = (path: string) => {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Create response
-  let response = NextResponse.next();
-
-  // Apply security headers
-  response = addSecurityHeaders(response);
-
-  // Apply rate limiting for API routes
-  if (pathname.startsWith("/api/")) {
-    try {
-      response = await applyRateLimit(request, response);
-    } catch (error) {
-      return NextResponse.json(
-        { error: "Rate limit exceeded. Please try again later." },
-        { status: 429 }
-      );
-    }
+  // Skip middleware for API routes and static files
+  if (
+    pathname.startsWith("/api/") ||
+    pathname.startsWith("/_next/") ||
+    pathname.includes(".")
+  ) {
+    return NextResponse.next();
   }
 
   const token = await getToken({ req: request });
@@ -42,7 +32,7 @@ export async function middleware(request: NextRequest) {
   const isVerified = token?.isVerified;
 
   if (!isAuthenticated && isAuthPage(pathname)) {
-    return response;
+    return NextResponse.next();
   }
 
   if (!isAuthenticated && !isAuthPage(pathname)) {
@@ -61,11 +51,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/notes", request.url));
   }
 
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|opengraph-image|twitter-image).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|manifest.json|robots.txt|sitemap.xml).*)",
   ],
 };
