@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import { LoaderThree } from "@/components/ui/LoaderThree";
 import { X } from "lucide-react";
 import { toast } from "sonner";
+import { RichTextEditor } from "@/components/editor";
+import "@/components/editor/editor.css";
+
 function CreateNote() {
   const [form, setForm] = useState({
     title: "",
@@ -15,8 +18,17 @@ function CreateNote() {
   const router = useRouter();
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
+
+  const handleContentChange = useCallback((content: string) => {
+    setForm((prev) => ({ ...prev, content }));
+  }, []);
+
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
+    if (!form.content || form.content === "<p></p>") {
+      toast.error("Please add some content to your note.");
+      return;
+    }
     try {
       setLoading(true);
       await axios.post("/api/notes/addNote", {
@@ -39,7 +51,7 @@ function CreateNote() {
   }
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-5xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <Link
@@ -68,7 +80,7 @@ function CreateNote() {
               id="title"
               name="title"
               placeholder="Give your note a title..."
-              className="w-full px-4 py-3 rounded-xl border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+              className="w-full px-4 py-3 rounded-xl border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all text-xl font-semibold"
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               required
             />
@@ -81,14 +93,16 @@ function CreateNote() {
             >
               Content
             </label>
-            <textarea
-              id="content"
-              name="content"
-              placeholder="Start writing your note..."
-              className="w-full h-80 px-4 py-3 rounded-xl border border-input bg-background text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
-              onChange={(e) => setForm({ ...form, content: e.target.value })}
-              required
+            <RichTextEditor
+              content={form.content}
+              onChange={handleContentChange}
+              placeholder="Start writing... Use '/' for commands"
             />
+            <p className="text-xs text-muted-foreground mt-2">
+              💡 Tip: Type{" "}
+              <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">/</kbd> to
+              insert blocks like headings, lists, code, and more
+            </p>
           </div>
 
           <div className="flex justify-end gap-3">

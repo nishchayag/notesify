@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import "./note.model";
+import "./folder.model";
+import "./tag.model";
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -29,6 +32,18 @@ const userSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Note",
+    },
+  ],
+  folders: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Folder",
+    },
+  ],
+  tags: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tag",
     },
   ],
 });

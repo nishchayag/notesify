@@ -1,23 +1,31 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import React from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { LoaderThree } from "./ui/LoaderThree";
 import { toast } from "sonner";
+import { RichTextEditor } from "@/components/editor";
+import "@/components/editor/editor.css";
 const EditNote = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const params = useSearchParams();
   const [noteid, setnoteid] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [form, setForm] = useState({
-    updatedTitle: " ",
-    updatedContent: " ",
+    updatedTitle: "",
+    updatedContent: "",
     updatedIsCompleted: false,
   });
   const outerIsCompleted = form.updatedIsCompleted;
+
+  const handleContentChange = useCallback((content: string) => {
+    setForm((prev) => ({ ...prev, updatedContent: content }));
+  }, []);
+
   useEffect(() => {
     const id = params.get("noteid");
     if (id) setnoteid(id);
@@ -25,18 +33,24 @@ const EditNote = () => {
   useEffect(() => {
     if (!noteid) return;
     const fetchNoteUsingId = async () => {
-      const response = await axios.post("/api/notes/fetchNote", {
-        noteId: noteid,
-      });
+      try {
+        const response = await axios.post("/api/notes/fetchNote", {
+          noteId: noteid,
+        });
 
-      const { title, content, isCompleted } = response.data;
+        const { title, content, isCompleted } = response.data;
 
-      setForm((prevForm) => ({
-        ...prevForm,
-        updatedTitle: title,
-        updatedContent: content,
-        updatedIsCompleted: isCompleted,
-      }));
+        setForm({
+          updatedTitle: title || "",
+          updatedContent: content || "",
+          updatedIsCompleted: isCompleted || false,
+        });
+      } catch (error) {
+        toast.error("Failed to load note.");
+        console.error("Error fetching note:", error);
+      } finally {
+        setInitialLoading(false);
+      }
     };
     fetchNoteUsingId();
   }, [noteid]);
@@ -83,13 +97,13 @@ const EditNote = () => {
     }
   };
 
-  if (loading) {
+  if (loading || initialLoading) {
     return <LoaderThree />;
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-5xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <button
@@ -127,7 +141,7 @@ const EditNote = () => {
               type="text"
               id="title"
               name="title"
-              className="w-full px-4 py-3 rounded-xl border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+              className="w-full px-4 py-3 rounded-xl border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all text-xl font-semibold"
               value={form.updatedTitle}
               onChange={(e) =>
                 setForm({ ...form, updatedTitle: e.target.value })
@@ -143,16 +157,16 @@ const EditNote = () => {
             >
               Content
             </label>
-            <textarea
-              id="content"
-              name="content"
-              className="w-full h-80 px-4 py-3 rounded-xl border border-input bg-background text-foreground resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
-              value={form.updatedContent}
-              onChange={(e) =>
-                setForm({ ...form, updatedContent: e.target.value })
-              }
-              required
+            <RichTextEditor
+              content={form.updatedContent}
+              onChange={handleContentChange}
+              placeholder="Start writing... Use '/' for commands"
             />
+            <p className="text-xs text-muted-foreground mt-2">
+              💡 Tip: Type{" "}
+              <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">/</kbd> to
+              insert blocks like headings, lists, code, and more
+            </p>
           </div>
 
           <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-xl">

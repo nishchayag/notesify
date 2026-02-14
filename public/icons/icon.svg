@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accent-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#bg-gradient)"/>
+  
+  <!-- Note paper -->
+  <rect x="140" y="100" width="232" height="312" rx="16" fill="white"/>
+  
+  <!-- Paper fold effect -->
+  <path d="M372 100 L372 140 L332 100 Z" fill="#e2e8f0"/>
+  <path d="M332 100 L372 140 L372 100 Z" fill="#cbd5e1"/>
+  
+  <!-- Lines on paper -->
+  <rect x="170" y="160" width="172" height="8" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <rect x="170" y="190" width="152" height="6" rx="3" fill="#94a3b8"/>
+  <rect x="170" y="216" width="172" height="6" rx="3" fill="#94a3b8"/>
+  <rect x="170" y="242" width="140" height="6" rx="3" fill="#94a3b8"/>
+  <rect x="170" y="268" width="160" height="6" rx="3" fill="#94a3b8"/>
+  
+  <!-- Checkmark -->
+  <circle cx="330" cy="340" r="50" fill="url(#accent-gradient)"/>
+  <path d="M305 340 L325 360 L360 320" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  
+  <!-- Pencil accent -->
+  <rect x="380" y="80" width="20" height="80" rx="4" fill="#fbbf24" transform="rotate(45 390 120)"/>
+  <polygon points="395,175 405,175 400,195" fill="#f59e0b" transform="rotate(45 400 185)"/>
+</svg>

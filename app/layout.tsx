@@ -11,6 +11,7 @@ import StructuredData, {
   webSiteStructuredData,
 } from "@/components/StructuredData";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { PWAProvider } from "@/components/PWAProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -107,7 +108,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Notesify" />
-        <link rel="apple-touch-icon" href="/next.svg" />
+        <link rel="apple-touch-icon" href="/icons/icon.svg" />
         <meta name="msapplication-TileColor" content="#3b82f6" />
       </head>
       <SessionWrapper>
@@ -115,15 +116,17 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <ErrorBoundary>
-            <ThemeProvider 
-              attribute="class" 
-              defaultTheme="system" 
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
               enableSystem
               disableTransitionOnChange
             >
-              <Navbar />
-              <main className="min-h-screen">{children}</main>
-              <Footer />
+              <PWAProvider>
+                <Navbar />
+                <main className="min-h-screen">{children}</main>
+                <Footer />
+              </PWAProvider>
               <Toaster richColors position="top-right" closeButton expand />
 
               {/* Structured Data */}
