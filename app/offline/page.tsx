@@ -16,8 +16,9 @@ export default function OfflinePage() {
             You&apos;re Offline
           </h1>
           <p className="text-muted-foreground">
-            It looks like you&apos;ve lost your internet connection. Don&apos;t worry,
-            your notes are safely stored and will sync when you&apos;re back online.
+            It looks like you&apos;ve lost your internet connection. Don&apos;t
+            worry, your notes are safely stored and will sync when you&apos;re
+            back online.
           </p>
         </div>
 
