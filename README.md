@@ -3,6 +3,7 @@
 Notesify is a minimal, fullstack note-taking web application built with a strong focus on **backend architecture, authentication**, and **clean code structure**. Designed as both a learning project and a real-world portfolio piece, Notesify lets users securely create, view, and manage their notes with a simple interface and robust backend.
 
 🔗 **Live App:** [https://notesify.nishchayag.live](https://notesify.nishchayag.live)
+🔗 **Presentation:** https://docs.google.com/presentation/d/1yAJ3suD0S2DDJuzWKUiv-qk8JAAvko1Y/edit?usp=drive_link&ouid=114879263973912932672&rtpof=true&sd=true
 
 ---
 
