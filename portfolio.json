@@ -1,0 +1,11 @@
+{
+  "title": "Notesify",
+  "summary": "Full-stack notes app with secure authentication, email-based account verification and password change flows.",
+  "stack": ["Next.js", "TypeScript", "MongoDB", "Tailwind CSS"],
+  "highlights": [
+    "Full CRUD for notes behind secure user authentication",
+    "Email verification and password change flows"
+  ],
+  "demoUrl": "https://notesify.nishchayag.com",
+  "kind": "Product"
+}
